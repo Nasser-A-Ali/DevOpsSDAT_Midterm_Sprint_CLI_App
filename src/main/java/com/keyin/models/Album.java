@@ -1,16 +1,22 @@
 package com.keyin.models;
 
 public class Album {
+    private String title;
     private Artist artist;
     private long releaseYear;
     private int numberOfSongs;
     private String genre;
 
-    public Album(Artist artist, long releaseYear, int numberOfSongs, String genre) {
+    public Album(String title, Artist artist, long releaseYear, int numberOfSongs, String genre) {
+        this.title = title;
         this.artist = artist;
         this.releaseYear = releaseYear;
         this.numberOfSongs = numberOfSongs;
         this.genre = genre;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public Artist getArtist() {
@@ -27,6 +33,10 @@ public class Album {
 
     public String getGenre() {
         return genre;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setArtist(Artist artist) {
@@ -48,7 +58,8 @@ public class Album {
     @Override
     public String toString() {
         return "Album{" +
-                "Artist= " + getArtist() +
+                "Title= " + getTitle() +
+                ", Artist= " + getArtist() +
                 ", Release Year= " + getReleaseYear() +
                 ", Number of Songs= " + getNumberOfSongs() +
                 ", Genre= " + getGenre() +
