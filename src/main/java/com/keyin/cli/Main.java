@@ -2,6 +2,7 @@ package com.keyin.cli;
 
 import com.keyin.models.Song;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -46,9 +47,27 @@ public class Main {
                     scanner.nextLine(); //Probably *not* optional
                 }
                 case 2 -> {
-                    System.out.println("\nSearching for an artist...");
-                    //Code goes here
-                    scanner.nextLine(); //Probably optional
+                    System.out.println("\nSearching for songs by artist ID...");
+                    int artistIdToSearch = scanner.nextInt();
+                    scanner.nextLine();
+
+                    boolean found = false;
+
+                    for (Song song:songs) {
+                        if (song.getArtistId() == artistIdToSearch) {
+                            System.out.println("Song: " + song.getTitle() + " | Genre: " + song.getGenre() + " | Duration: " + song.getDuration());
+                            found = true;
+                        }
+                    }
+
+                    if (!found) {
+                        System.out.println("No songs found for this artist.");
+                    }
+
+                    System.out.println("\nPress Enter to return to the main menu...");
+                    scanner.nextLine();
+
+                    scanner.nextLine();
                 }
                 case 3 -> {
                     System.out.println("\nViewing albums by artist...");
@@ -57,8 +76,38 @@ public class Main {
                 }
                 case 4 -> {
                     System.out.println("\nAdding a new song...");
-                    //Code goes here
-                    scanner.nextLine(); //Probably optional
+                    System.out.println("Enter song ID: ");
+                    int newId = scanner.nextInt();
+                    scanner.nextLine();
+
+                    System.out.println("Enter song title: ");
+                    String newTitle = scanner.nextLine();
+
+                    System.out.println("Enter artist ID: ");
+                    int newArtistId = scanner.nextInt();
+                    scanner.nextLine();
+
+                    System.out.println("Enter song Genre: ");
+                    String newGenre = scanner.nextLine();
+
+                    System.out.println("Enter song duration (e.g 4min30 seconds as '4.30'): ");
+                    double newDuration = scanner.nextDouble();
+                    scanner.nextLine();
+
+                    // create new song add to list
+                    Song newSong = new Song(newId, newTitle, newArtistId, newGenre, newDuration);
+                    songs.add(newSong);
+
+                    System.out.println("New song added: " + newTitle);
+
+                    System.out.println("\nPress Enter to return to the main menu...");
+                    scanner.nextLine();
+
+
+
+
+
+                    scanner.nextLine();
                 }
                 case 5 -> {
                     System.out.println("\nEditing song details...");
