@@ -1,19 +1,19 @@
 package com.keyin.models;
 
 public class Album {
-    private String artist;
+    private Artist artist;
     private long releaseYear;
     private int numberOfSongs;
     private String genre;
 
-    public Album(String artist, long releaseYear, int numberOfSongs, String genre) {
+    public Album(Artist artist, long releaseYear, int numberOfSongs, String genre) {
         this.artist = artist;
         this.releaseYear = releaseYear;
         this.numberOfSongs = numberOfSongs;
         this.genre = genre;
     }
 
-    public String getArtist() {
+    public Artist getArtist() {
         return artist;
     }
 
@@ -29,7 +29,7 @@ public class Album {
         return genre;
     }
 
-    public void setArtist(String artist) {
+    public void setArtist(Artist artist) {
         this.artist = artist;
     }
 
