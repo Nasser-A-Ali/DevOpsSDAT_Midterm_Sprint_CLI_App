@@ -161,8 +161,22 @@ public class Main {
                 }
                 case 6 -> {
                     System.out.println("\nDeleting a song...");
-                    //Code goes here
-                    scanner.nextLine(); //Probably optional
+
+                    System.out.println("Enter the ID of the song to delete: ");
+                    int deleteId = scanner.nextInt();
+                    scanner.nextLine();
+
+                    boolean removed = songs.removeIf(song -> song.getId() == deleteId);
+
+                    if(removed){
+                        System.out.println("Song with ID: " + deleteId + " removed!");
+                    } else {
+                        System.out.println("No song with ID: " + deleteId + " found.");
+                    }
+
+                    System.out.println("\nPress Enter to return to the main menu...");
+
+                    scanner.nextLine();
                 }
                 case 7 -> {
                     System.out.println("\nExiting the program. Goodbye!");
