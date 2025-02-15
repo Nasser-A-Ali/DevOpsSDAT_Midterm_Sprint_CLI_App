@@ -1,5 +1,6 @@
 package com.keyin.models;
 
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,4 +39,5 @@ public class SongTest {
         assertEquals(expectedGenre, song.getGenre());
         assertEquals(expectedDuration, song.getDuration());
     }
+
 }
