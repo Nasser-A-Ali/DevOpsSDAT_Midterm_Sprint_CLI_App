@@ -2,6 +2,8 @@ package test.com.keyin.models;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+import java.util.ArrayList;
 
 import com.keyin.models.Album;
 import com.keyin.models.Artist;
@@ -12,8 +14,13 @@ public class AlbumTest {
     private Artist artist;
 
     public void setUp() {
+
+        List<String> tracks = new ArrayList<>();
+        tracks.add("Getting Older");
+        tracks.add("Lost Cause");
+
         artist = new Artist("Billie Eilish", 2015, "pop", "USA");
-        album = new Album("Happier Than Ever", artist, 2021, 16, "Alternative");
+        album = new Album("Happier Than Ever", artist, 2021, 16, tracks, "Alternative");
     }
 
     @Test

@@ -1,17 +1,21 @@
 package com.keyin.models;
 
+import java.util.List;
+
 public class Album {
     private String title;
     private Artist artist;
     private long releaseYear;
     private int numberOfSongs;
+    private List<String> tracks;
     private String genre;
 
-    public Album(String title, Artist artist, long releaseYear, int numberOfSongs, String genre) {
+    public Album(String title, Artist artist, long releaseYear, int numberOfSongs, List<String> tracks, String genre) {
         this.title = title;
         this.artist = artist;
         this.releaseYear = releaseYear;
         this.numberOfSongs = numberOfSongs;
+        this.tracks = tracks;
         this.genre = genre;
     }
 
@@ -29,6 +33,10 @@ public class Album {
 
     public int getNumberOfSongs() {
         return numberOfSongs;
+    }
+
+    public List<String> getTracks() {
+        return tracks;
     }
 
     public String getGenre() {
@@ -51,6 +59,10 @@ public class Album {
         this.numberOfSongs = numberOfSongs;
     }
 
+    public void setTracks(List<String> tracks) {
+        this.tracks = tracks;
+    }
+
     public void setGenre(String genre) {
         this.genre = genre;
     }
@@ -62,6 +74,7 @@ public class Album {
                 ", Artist= " + getArtist() +
                 ", Release Year= " + getReleaseYear() +
                 ", Number of Songs= " + getNumberOfSongs() +
+                ", Tracks= " + getTracks() +
                 ", Genre= " + getGenre() +
                 "}";
     }
