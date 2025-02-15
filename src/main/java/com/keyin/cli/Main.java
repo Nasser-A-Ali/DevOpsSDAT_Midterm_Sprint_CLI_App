@@ -111,8 +111,53 @@ public class Main {
                 }
                 case 5 -> {
                     System.out.println("\nEditing song details...");
-                    //Code goes here
-                    scanner.nextLine(); //Probably optional
+
+                    System.out.println("Enter the ID of the song you want to edit: ");
+                    int editId = scanner.nextInt();
+                    scanner.nextLine();
+
+                    // title
+                    boolean found = false;
+                    for(Song song : songs ) {
+                        if (song.getId() == editId) {
+                            System.out.println("Enter new title ( or press Enter to keep current title: " + song.getTitle() + "): ");
+                            String newTitle = scanner.nextLine();
+                            if(!newTitle.isBlank()) {
+                                song.setTitle(newTitle);
+                            }
+                            // Artist ID
+                            System.out.println("Enter new artist ID (or -1 to keep current ID: " + song.getArtistId() + "): ");
+                            int newArtistId = scanner.nextInt();
+                            scanner.nextLine();
+                            if (newArtistId != -1) {
+                                song.setArtistId(newArtistId);
+                            }
+                            // Genre
+                            System.out.println("Enter new genre (or press Enter to keep current genre: " + song.getGenre() + "): ");
+                            String newGenre = scanner.nextLine();
+                            if (!newGenre.isBlank()) {
+                                song.setGenre(newGenre);
+                            }
+                            // duration
+                            System.out.println("Enter new duration (or -1 to keep current duration: " + song.getDuration() + "): ");
+                            double newDuration = scanner.nextDouble();
+                            scanner.nextLine();
+                            if (newDuration != -1) {
+                                song.setDuration(newDuration);
+                            }
+                            // Updated
+                            System.out.println("Song updated!: " + song.getTitle());
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        System.out.println("No song found with IDL " + editId);
+                    }
+
+                    System.out.println("\nPress Enter to return to main menu...");
+                    scanner.nextLine();
                 }
                 case 6 -> {
                     System.out.println("\nDeleting a song...");
