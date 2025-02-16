@@ -19,15 +19,18 @@ public class Main {
         songs.add(new Song(2, "Billie Jean", 102, "Pop", 4.54));
         songs.add(new Song(3, "Imagine", 103, "Rock", 3.12));
 
-        List<String> tracks1 = List.of("Hey Jude", "Let It Be", "Come Together");
-        List<String> tracks2 = List.of("Bad Guy", "Everything I Wanted", "When The Party's Over");
+        List<Song> album1Songs = List.of(new Song(1, "Hey Jude", 101, "Rock", 4.50),
+                new Song(2, "Let It Be", 101, "Rock", 3.50));
+        List<Song> album2Songs = List.of(new Song(3, "Bad Guy", 102, "Pop", 4.10),
+                new Song(4, "When The Party's Over", 102, "Pop", 3.30));
 
         Artist artist1 = new Artist("The Beatles", 1960, "Rock", "UK");
         Artist artist2 = new Artist("Billie Eilish", 2015, "Pop", "USA");
 
         List<Album> albums = new ArrayList<>();
-        albums.add(new Album("Abbey Road", artist1, 1969, 17, tracks1, "Rock"));
-        albums.add(new Album("Happier Than Ever", artist2, 2021, 16, tracks2, "Pop"));
+
+        albums.add(new Album(1, "Abbey Road", artist1, 1969, 17, album1Songs, "Rock"));
+        albums.add(new Album(2, "Happier Than Ever", artist2, 2021, 16, album2Songs, "Pop"));
 
         while (true) {
             // These options were just some filler options. They don't need to be the final
@@ -103,7 +106,7 @@ public class Main {
                 }
                 case 4 -> {
                     System.out.println("\nAdding a new song...");
-                      System.out.println("Enter song ID: ");
+                    System.out.println("Enter song ID: ");
                     int newId = scanner.nextInt();
                     scanner.nextLine();
 
@@ -133,70 +136,65 @@ public class Main {
                     scanner.nextLine(); // Probably optional
                 }
 
-//                 case 6 -> {
-//                     System.out.println("\nDeleting a song...");
-//                     // Code goes here
-//                   System.out.println("Enter song ID: ");
-//                     int newId = scanner.nextInt();
-//                     scanner.nextLine();
+                // case 6 -> {
+                // System.out.println("\nDeleting a song...");
+                // // Code goes here
+                // System.out.println("Enter song ID: ");
+                // int newId = scanner.nextInt();
+                // scanner.nextLine();
 
-//                     System.out.println("Enter song title: ");
-//                     String newTitle = scanner.nextLine();
+                // System.out.println("Enter song title: ");
+                // String newTitle = scanner.nextLine();
 
-//                     System.out.println("Enter artist ID: ");
-//                     int newArtistId = scanner.nextInt();
-//                     scanner.nextLine();
+                // System.out.println("Enter artist ID: ");
+                // int newArtistId = scanner.nextInt();
+                // scanner.nextLine();
 
-//                     System.out.println("Enter song Genre: ");
-//                     String newGenre = scanner.nextLine();
+                // System.out.println("Enter song Genre: ");
+                // String newGenre = scanner.nextLine();
 
-//                     System.out.println("Enter song duration (e.g 4min30 seconds as '4.30'): ");
-//                     double newDuration = scanner.nextDouble();
-//                     scanner.nextLine();
+                // System.out.println("Enter song duration (e.g 4min30 seconds as '4.30'): ");
+                // double newDuration = scanner.nextDouble();
+                // scanner.nextLine();
 
-//                     // create new song add to list
-//                     Song newSong = new Song(newId, newTitle, newArtistId, newGenre, newDuration);
-//                     songs.add(newSong);
+                // // create new song add to list
+                // Song newSong = new Song(newId, newTitle, newArtistId, newGenre, newDuration);
+                // songs.add(newSong);
 
-//                     System.out.println("New song added: " + newTitle);
+                // System.out.println("New song added: " + newTitle);
 
-//                     System.out.println("\nPress Enter to return to the main menu...");
-//                     scanner.nextLine();
-//                     scanner.nextLine(); // Probably optional
+                // System.out.println("\nPress Enter to return to the main menu...");
+                // scanner.nextLine();
+                // scanner.nextLine(); // Probably optional
 
-//                     System.out.println("Enter song ID: ");
-//                     int newId = scanner.nextInt();
-//                     scanner.nextLine();
+                // System.out.println("Enter song ID: ");
+                // int newId = scanner.nextInt();
+                // scanner.nextLine();
 
-//                     System.out.println("Enter song title: ");
-//                     String newTitle = scanner.nextLine();
+                // System.out.println("Enter song title: ");
+                // String newTitle = scanner.nextLine();
 
-//                     System.out.println("Enter artist ID: ");
-//                     int newArtistId = scanner.nextInt();
-//                     scanner.nextLine();
+                // System.out.println("Enter artist ID: ");
+                // int newArtistId = scanner.nextInt();
+                // scanner.nextLine();
 
-//                     System.out.println("Enter song Genre: ");
-//                     String newGenre = scanner.nextLine();
+                // System.out.println("Enter song Genre: ");
+                // String newGenre = scanner.nextLine();
 
-//                     System.out.println("Enter song duration (e.g 4min30 seconds as '4.30'): ");
-//                     double newDuration = scanner.nextDouble();
-//                     scanner.nextLine();
+                // System.out.println("Enter song duration (e.g 4min30 seconds as '4.30'): ");
+                // double newDuration = scanner.nextDouble();
+                // scanner.nextLine();
 
-//                     // create new song add to list
-//                     Song newSong = new Song(newId, newTitle, newArtistId, newGenre, newDuration);
-//                     songs.add(newSong);
+                // // create new song add to list
+                // Song newSong = new Song(newId, newTitle, newArtistId, newGenre, newDuration);
+                // songs.add(newSong);
 
-//                     System.out.println("New song added: " + newTitle);
+                // System.out.println("New song added: " + newTitle);
 
-//                     System.out.println("\nPress Enter to return to the main menu...");
-//                     scanner.nextLine();
+                // System.out.println("\nPress Enter to return to the main menu...");
+                // scanner.nextLine();
 
-
-
-
-
-//                     scanner.nextLine();
-                }
+                // scanner.nextLine();
                 case 5 -> {
                     System.out.println("\nEditing song details...");
 
@@ -206,28 +204,32 @@ public class Main {
 
                     // title
                     boolean found = false;
-                    for(Song song : songs ) {
+                    for (Song song : songs) {
                         if (song.getId() == editId) {
-                            System.out.println("Enter new title ( or press Enter to keep current title: " + song.getTitle() + "): ");
+                            System.out.println("Enter new title ( or press Enter to keep current title: "
+                                    + song.getTitle() + "): ");
                             String newTitle = scanner.nextLine();
-                            if(!newTitle.isBlank()) {
+                            if (!newTitle.isBlank()) {
                                 song.setTitle(newTitle);
                             }
                             // Artist ID
-                            System.out.println("Enter new artist ID (or -1 to keep current ID: " + song.getArtistId() + "): ");
+                            System.out.println(
+                                    "Enter new artist ID (or -1 to keep current ID: " + song.getArtistId() + "): ");
                             int newArtistId = scanner.nextInt();
                             scanner.nextLine();
                             if (newArtistId != -1) {
                                 song.setArtistId(newArtistId);
                             }
                             // Genre
-                            System.out.println("Enter new genre (or press Enter to keep current genre: " + song.getGenre() + "): ");
+                            System.out.println("Enter new genre (or press Enter to keep current genre: "
+                                    + song.getGenre() + "): ");
                             String newGenre = scanner.nextLine();
                             if (!newGenre.isBlank()) {
                                 song.setGenre(newGenre);
                             }
                             // duration
-                            System.out.println("Enter new duration (or -1 to keep current duration: " + song.getDuration() + "): ");
+                            System.out.println("Enter new duration (or -1 to keep current duration: "
+                                    + song.getDuration() + "): ");
                             double newDuration = scanner.nextDouble();
                             scanner.nextLine();
                             if (newDuration != -1) {
@@ -256,7 +258,7 @@ public class Main {
 
                     boolean removed = songs.removeIf(song -> song.getId() == deleteId);
 
-                    if(removed){
+                    if (removed) {
                         System.out.println("Song with ID: " + deleteId + " removed!");
                     } else {
                         System.out.println("No song with ID: " + deleteId + " found.");
@@ -276,8 +278,8 @@ public class Main {
                     for (Album album : albums) {
                         if (album.getTitle().equalsIgnoreCase(albumTitle)) {
                             System.out.println("Tracks in " + albumTitle + ": ");
-                            for (String track : album.getTracks()) {
-                                System.out.println(" - " + track);
+                            for (Song song : album.getListOfSongs()) {
+                                System.out.println(" - " + song);
                             }
                             albumFound = true;
                             break;

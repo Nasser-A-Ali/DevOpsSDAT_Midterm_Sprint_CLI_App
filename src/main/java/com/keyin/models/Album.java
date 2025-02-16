@@ -3,20 +3,27 @@ package com.keyin.models;
 import java.util.List;
 
 public class Album {
+    private int id;
     private String title;
     private Artist artist;
     private long releaseYear;
     private int numberOfSongs;
-    private List<String> tracks;
+    private List<Song> listOfSongs;
     private String genre;
 
-    public Album(String title, Artist artist, long releaseYear, int numberOfSongs, List<String> tracks, String genre) {
+    public Album(int id, String title, Artist artist, long releaseYear, int numberOfSongs, List<Song> listOfSongs,
+            String genre) {
+        this.id = id;
         this.title = title;
         this.artist = artist;
         this.releaseYear = releaseYear;
         this.numberOfSongs = numberOfSongs;
-        this.tracks = tracks;
+        this.listOfSongs = listOfSongs;
         this.genre = genre;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -35,12 +42,16 @@ public class Album {
         return numberOfSongs;
     }
 
-    public List<String> getTracks() {
-        return tracks;
+    public List<Song> getListOfSongs() {
+        return listOfSongs;
     }
 
     public String getGenre() {
         return genre;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setTitle(String title) {
@@ -59,8 +70,8 @@ public class Album {
         this.numberOfSongs = numberOfSongs;
     }
 
-    public void setTracks(List<String> tracks) {
-        this.tracks = tracks;
+    public void setTracks(List<Song> listOfSongs) {
+        this.listOfSongs = listOfSongs;
     }
 
     public void setGenre(String genre) {
@@ -70,11 +81,12 @@ public class Album {
     @Override
     public String toString() {
         return "Album{" +
-                "Title= " + getTitle() +
+                "Id= " + getId() +
+                ", Title= " + getTitle() +
                 ", Artist= " + getArtist() +
                 ", Release Year= " + getReleaseYear() +
                 ", Number of Songs= " + getNumberOfSongs() +
-                ", Tracks= " + getTracks() +
+                ", Tracks= " + getListOfSongs() +
                 ", Genre= " + getGenre() +
                 "}";
     }
