@@ -47,27 +47,6 @@ public class Main {
                     scanner.nextLine(); //Probably *not* optional
                 }
                 case 2 -> {
-                    System.out.println("\nSearching for songs by artist ID...");
-                    int artistIdToSearch = scanner.nextInt();
-                    scanner.nextLine();
-
-                    boolean found = false;
-
-                    for (Song song:songs) {
-                        if (song.getArtistId() == artistIdToSearch) {
-                            System.out.println("Song: " + song.getTitle() + " | Genre: " + song.getGenre() + " | Duration: " + song.getDuration());
-                            found = true;
-                        }
-                    }
-
-                    if (!found) {
-                        System.out.println("No songs found for this artist.");
-                    }
-
-                    System.out.println("\nPress Enter to return to the main menu...");
-                    scanner.nextLine();
-
-                    scanner.nextLine();
                 }
                 case 3 -> {
                     System.out.println("\nViewing albums by artist...");
