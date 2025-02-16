@@ -103,7 +103,7 @@ public class Main {
                 }
                 case 4 -> {
                     System.out.println("\nAdding a new song...");
-                      System.out.println("Enter song ID: ");
+                    System.out.println("Enter song ID: ");
                     int newId = scanner.nextInt();
                     scanner.nextLine();
 
@@ -133,70 +133,65 @@ public class Main {
                     scanner.nextLine(); // Probably optional
                 }
 
-//                 case 6 -> {
-//                     System.out.println("\nDeleting a song...");
-//                     // Code goes here
-//                   System.out.println("Enter song ID: ");
-//                     int newId = scanner.nextInt();
-//                     scanner.nextLine();
+                // case 6 -> {
+                // System.out.println("\nDeleting a song...");
+                // // Code goes here
+                // System.out.println("Enter song ID: ");
+                // int newId = scanner.nextInt();
+                // scanner.nextLine();
 
-//                     System.out.println("Enter song title: ");
-//                     String newTitle = scanner.nextLine();
+                // System.out.println("Enter song title: ");
+                // String newTitle = scanner.nextLine();
 
-//                     System.out.println("Enter artist ID: ");
-//                     int newArtistId = scanner.nextInt();
-//                     scanner.nextLine();
+                // System.out.println("Enter artist ID: ");
+                // int newArtistId = scanner.nextInt();
+                // scanner.nextLine();
 
-//                     System.out.println("Enter song Genre: ");
-//                     String newGenre = scanner.nextLine();
+                // System.out.println("Enter song Genre: ");
+                // String newGenre = scanner.nextLine();
 
-//                     System.out.println("Enter song duration (e.g 4min30 seconds as '4.30'): ");
-//                     double newDuration = scanner.nextDouble();
-//                     scanner.nextLine();
+                // System.out.println("Enter song duration (e.g 4min30 seconds as '4.30'): ");
+                // double newDuration = scanner.nextDouble();
+                // scanner.nextLine();
 
-//                     // create new song add to list
-//                     Song newSong = new Song(newId, newTitle, newArtistId, newGenre, newDuration);
-//                     songs.add(newSong);
+                // // create new song add to list
+                // Song newSong = new Song(newId, newTitle, newArtistId, newGenre, newDuration);
+                // songs.add(newSong);
 
-//                     System.out.println("New song added: " + newTitle);
+                // System.out.println("New song added: " + newTitle);
 
-//                     System.out.println("\nPress Enter to return to the main menu...");
-//                     scanner.nextLine();
-//                     scanner.nextLine(); // Probably optional
+                // System.out.println("\nPress Enter to return to the main menu...");
+                // scanner.nextLine();
+                // scanner.nextLine(); // Probably optional
 
-//                     System.out.println("Enter song ID: ");
-//                     int newId = scanner.nextInt();
-//                     scanner.nextLine();
+                // System.out.println("Enter song ID: ");
+                // int newId = scanner.nextInt();
+                // scanner.nextLine();
 
-//                     System.out.println("Enter song title: ");
-//                     String newTitle = scanner.nextLine();
+                // System.out.println("Enter song title: ");
+                // String newTitle = scanner.nextLine();
 
-//                     System.out.println("Enter artist ID: ");
-//                     int newArtistId = scanner.nextInt();
-//                     scanner.nextLine();
+                // System.out.println("Enter artist ID: ");
+                // int newArtistId = scanner.nextInt();
+                // scanner.nextLine();
 
-//                     System.out.println("Enter song Genre: ");
-//                     String newGenre = scanner.nextLine();
+                // System.out.println("Enter song Genre: ");
+                // String newGenre = scanner.nextLine();
 
-//                     System.out.println("Enter song duration (e.g 4min30 seconds as '4.30'): ");
-//                     double newDuration = scanner.nextDouble();
-//                     scanner.nextLine();
+                // System.out.println("Enter song duration (e.g 4min30 seconds as '4.30'): ");
+                // double newDuration = scanner.nextDouble();
+                // scanner.nextLine();
 
-//                     // create new song add to list
-//                     Song newSong = new Song(newId, newTitle, newArtistId, newGenre, newDuration);
-//                     songs.add(newSong);
+                // // create new song add to list
+                // Song newSong = new Song(newId, newTitle, newArtistId, newGenre, newDuration);
+                // songs.add(newSong);
 
-//                     System.out.println("New song added: " + newTitle);
+                // System.out.println("New song added: " + newTitle);
 
-//                     System.out.println("\nPress Enter to return to the main menu...");
-//                     scanner.nextLine();
+                // System.out.println("\nPress Enter to return to the main menu...");
+                // scanner.nextLine();
 
-
-
-
-
-//                     scanner.nextLine();
-                }
+                // scanner.nextLine();
                 case 5 -> {
                     System.out.println("\nEditing song details...");
 
@@ -206,28 +201,32 @@ public class Main {
 
                     // title
                     boolean found = false;
-                    for(Song song : songs ) {
+                    for (Song song : songs) {
                         if (song.getId() == editId) {
-                            System.out.println("Enter new title ( or press Enter to keep current title: " + song.getTitle() + "): ");
+                            System.out.println("Enter new title ( or press Enter to keep current title: "
+                                    + song.getTitle() + "): ");
                             String newTitle = scanner.nextLine();
-                            if(!newTitle.isBlank()) {
+                            if (!newTitle.isBlank()) {
                                 song.setTitle(newTitle);
                             }
                             // Artist ID
-                            System.out.println("Enter new artist ID (or -1 to keep current ID: " + song.getArtistId() + "): ");
+                            System.out.println(
+                                    "Enter new artist ID (or -1 to keep current ID: " + song.getArtistId() + "): ");
                             int newArtistId = scanner.nextInt();
                             scanner.nextLine();
                             if (newArtistId != -1) {
                                 song.setArtistId(newArtistId);
                             }
                             // Genre
-                            System.out.println("Enter new genre (or press Enter to keep current genre: " + song.getGenre() + "): ");
+                            System.out.println("Enter new genre (or press Enter to keep current genre: "
+                                    + song.getGenre() + "): ");
                             String newGenre = scanner.nextLine();
                             if (!newGenre.isBlank()) {
                                 song.setGenre(newGenre);
                             }
                             // duration
-                            System.out.println("Enter new duration (or -1 to keep current duration: " + song.getDuration() + "): ");
+                            System.out.println("Enter new duration (or -1 to keep current duration: "
+                                    + song.getDuration() + "): ");
                             double newDuration = scanner.nextDouble();
                             scanner.nextLine();
                             if (newDuration != -1) {
@@ -256,7 +255,7 @@ public class Main {
 
                     boolean removed = songs.removeIf(song -> song.getId() == deleteId);
 
-                    if(removed){
+                    if (removed) {
                         System.out.println("Song with ID: " + deleteId + " removed!");
                     } else {
                         System.out.println("No song with ID: " + deleteId + " found.");
