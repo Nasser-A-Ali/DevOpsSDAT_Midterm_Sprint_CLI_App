@@ -24,13 +24,19 @@ public class Main {
         List<Song> album2Songs = List.of(new Song(3, "Bad Guy", 102, "Pop", 4.10),
                 new Song(4, "When The Party's Over", 102, "Pop", 3.30));
 
-        Artist artist1 = new Artist("The Beatles", 1960, "Rock", "UK");
-        Artist artist2 = new Artist("Billie Eilish", 2015, "Pop", "USA");
+        Artist artist1 = new Artist(1, "The Beatles", 1960, "Rock", "UK", null);
+        Artist artist2 = new Artist(2, "Billie Eilish", 2015, "Pop", "USA", null);
 
         List<Album> albums = new ArrayList<>();
 
         albums.add(new Album(1, "Abbey Road", artist1, 1969, 17, album1Songs, "Rock"));
         albums.add(new Album(2, "Happier Than Ever", artist2, 2021, 16, album2Songs, "Pop"));
+
+        Album album1 = new Album(1, "Abbey Road", artist1, 1969, 17, album1Songs, "Rock");
+        Album album2 = new Album(2, "Happier Than Ever", artist2, 2021, 16, album2Songs, "Pop");
+
+        artist1.setAlbum(album1);
+        artist2.setAlbum(album2);
 
         while (true) {
             // These options were just some filler options. They don't need to be the final
