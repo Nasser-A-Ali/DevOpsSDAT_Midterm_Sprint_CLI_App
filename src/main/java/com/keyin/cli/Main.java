@@ -19,15 +19,18 @@ public class Main {
         songs.add(new Song(2, "Billie Jean", 102, "Pop", 4.54));
         songs.add(new Song(3, "Imagine", 103, "Rock", 3.12));
 
-        List<String> tracks1 = List.of("Hey Jude", "Let It Be", "Come Together");
-        List<String> tracks2 = List.of("Bad Guy", "Everything I Wanted", "When The Party's Over");
+        List<Song> album1Songs = List.of(new Song(1, "Hey Jude", 101, "Rock", 4.50),
+                new Song(2, "Let It Be", 101, "Rock", 3.50));
+        List<Song> album2Songs = List.of(new Song(3, "Bad Guy", 102, "Pop", 4.10),
+                new Song(4, "When The Party's Over", 102, "Pop", 3.30));
 
         Artist artist1 = new Artist("The Beatles", 1960, "Rock", "UK");
         Artist artist2 = new Artist("Billie Eilish", 2015, "Pop", "USA");
 
         List<Album> albums = new ArrayList<>();
-        albums.add(new Album("Abbey Road", artist1, 1969, 17, tracks1, "Rock"));
-        albums.add(new Album("Happier Than Ever", artist2, 2021, 16, tracks2, "Pop"));
+
+        albums.add(new Album(1, "Abbey Road", artist1, 1969, 17, album1Songs, "Rock"));
+        albums.add(new Album(2, "Happier Than Ever", artist2, 2021, 16, album2Songs, "Pop"));
 
         while (true) {
             // These options were just some filler options. They don't need to be the final
@@ -275,8 +278,8 @@ public class Main {
                     for (Album album : albums) {
                         if (album.getTitle().equalsIgnoreCase(albumTitle)) {
                             System.out.println("Tracks in " + albumTitle + ": ");
-                            for (String track : album.getTracks()) {
-                                System.out.println(" - " + track);
+                            for (Song song : album.getListOfSongs()) {
+                                System.out.println(" - " + song);
                             }
                             albumFound = true;
                             break;
