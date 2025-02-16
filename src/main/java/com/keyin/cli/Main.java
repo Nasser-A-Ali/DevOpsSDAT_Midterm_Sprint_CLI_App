@@ -5,9 +5,7 @@ import com.keyin.models.Artist;
 import com.keyin.models.Song;
 
 import java.sql.SQLOutput;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,8 +13,8 @@ public class Main {
 
         // Just some test songs
         List<Song> songs = new ArrayList<>();
-        songs.add(new Song(1, "Bohemian Rhapsody", 101, "Rock", 5.55));
-        songs.add(new Song(2, "Billie Jean", 102, "Pop", 4.54));
+        songs.add(new Song(1, "Bohemian Rhapsody", 1, "Rock", 5.55));
+        songs.add(new Song(2, "Billie Jean", 2, "Pop", 4.54));
         songs.add(new Song(3, "Imagine", 103, "Rock", 3.12));
 
         List<Song> album1Songs = List.of(new Song(1, "Hey Jude", 101, "Rock", 4.50),
@@ -37,6 +35,10 @@ public class Main {
 
         artist1.setAlbum(album1);
         artist2.setAlbum(album2);
+
+        Map<Integer, Artist> artistMap = new HashMap<>();
+        artistMap.put(artist1.getId(), artist1);
+        artistMap.put(artist2.getId(), artist2);
 
         while (true) {
             // These options were just some filler options. They don't need to be the final
@@ -62,11 +64,14 @@ public class Main {
                         System.out.println("No songs available.");
                     } else {
                         for (Song song : songs) {
-                            System.out.println(song.getArtistId() + " - " + song.getTitle());
+                            // Get the artist's name using the artist ID
+                            Artist artist = artistMap.get(song.getArtistId());
+                            String artistName = (artist != null) ? artist.getName() : "Unknown Artist";
+
+                            System.out.println(artistName + " - " + song.getTitle());
                         }
                     }
-                    // Code goes here
-                    scanner.nextLine(); // Probably *not* optional
+                    scanner.nextLine(); // Keeps the scanner from skipping input
                 }
                 case 2 -> {
 
