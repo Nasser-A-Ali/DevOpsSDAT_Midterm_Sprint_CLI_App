@@ -9,7 +9,7 @@ public class Song {
     private int releaseYear;
 
     public Song(int id, String title, int artistId, String genre, double duration) {
-        this(id, title, artistId, genre, duration, -1);  // default release year to keep tests from failing
+        this(id, title, artistId, genre, duration, -1);
     }
 
     public Song(int id, String title, int artistId, String genre, double duration, int releaseYear) {
