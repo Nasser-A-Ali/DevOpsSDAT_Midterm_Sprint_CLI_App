@@ -150,4 +150,62 @@ public class RESTClient {
 
         return songs;
     }
+
+    public void addSong(Song song) {
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = "";
+
+        try {
+            requestBody = mapper.writeValueAsString(song);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/song"))  
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        try {
+            HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 201) { // HTTP 201 Created
+                System.out.println("Song successfully added to API!");
+            } else {
+                System.out.println("Error: " + response.statusCode());
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateSong(long id, Song song) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = "";
+
+        try {
+            requestBody = objectMapper.writeValueAsString(song);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/song/" + id))  //
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        try {
+            HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                System.out.println("Song successfully updated!");
+            } else {
+                System.out.println("Failed to update song. Error: " + response.statusCode());
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

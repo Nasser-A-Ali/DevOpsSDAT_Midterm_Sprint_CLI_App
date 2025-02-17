@@ -1,5 +1,7 @@
 package com.keyin.models;
 
+import java.util.List;
+
 public class Artist {
     private int id;
     private String name;
@@ -7,14 +9,17 @@ public class Artist {
     private String genre;
     private String country;
     private Album album;
+    private List<Song> listOfSongs;
 
-    public Artist (int id, String name, long debutYear, String genre, String country, Album album) {
+
+    public Artist (int id, String name, long debutYear, String genre, String country, Album album, List<Song> listOfSongs) {
         this.id = id;
         this.name = name;
         this.debutYear = debutYear;
         this.genre = genre;
         this.country = country;
         this.album = album;
+        this.listOfSongs = listOfSongs;
     }
 
     public Album getAlbum() {
@@ -62,19 +67,18 @@ public class Artist {
         return country;
     }
 
+    public List<Song> getListOfSongs() {
+        return listOfSongs;
+    }
+
+    public void setListOfSongs(List<Song> listOfSongs) {
+        this.listOfSongs = listOfSongs;
+    }
+
     public void setCountry(String country) {
         this.country = country;
     }
+    @Override public String toString() {    return "Id=" + id + "; Artist=" + name;}
 
-    @Override
-    public String toString() {
-        return "Artist{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", debutYear=" + debutYear +
-                ", genre='" + genre + '\'' +
-                ", country='" + country + '\'' +
-                ", album=" + album +
-                '}';
-    }
+
 }

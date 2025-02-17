@@ -1,5 +1,6 @@
 package com.keyin.cli;
 
+import com.keyin.client.RESTClient;
 import com.keyin.models.Album;
 import com.keyin.models.Artist;
 import com.keyin.models.Song;
@@ -11,19 +12,17 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Just some test songs
-        List<Song> songs = new ArrayList<>();
-        songs.add(new Song(1, "Bohemian Rhapsody", 1, "Rock", 5.55, 1975 ));
-        songs.add(new Song(2, "Billie Jean", 2, "Pop", 4.54, 1982));
-        songs.add(new Song(3, "Imagine", 103, "Rock", 3.12, 1971));
+        RESTClient restClient = new RESTClient();
+        restClient.setServerURL("http://localhost:8080");
+
 
         List<Song> album1Songs = List.of(new Song(1, "Hey Jude", 101, "Rock", 4.50, 1968),
                 new Song(2, "Let It Be", 101, "Rock", 3.50, 1970));
         List<Song> album2Songs = List.of(new Song(3, "Bad Guy", 102, "Pop", 4.10, 2019),
                 new Song(4, "When The Party's Over", 102, "Pop", 3.30, 2018));
 
-        Artist artist1 = new Artist(1, "The Beatles", 1960, "Rock", "UK", null);
-        Artist artist2 = new Artist(2, "Billie Eilish", 2015, "Pop", "USA", null);
+        Artist artist1 = new Artist(1, "The Beatles", 1960, "Rock", "UK", null, null);
+        Artist artist2 = new Artist(2, "Billie Eilish", 2015, "Pop", "USA", null, null);
 
         List<Album> albums = new ArrayList<>();
 
@@ -61,18 +60,20 @@ public class Main {
             switch (choice) {
                 case 1 -> {
                     System.out.println("\nViewing all songs...");
-                    if (songs.isEmpty()) {
+                    List<Song> songsFromAPI = restClient.getAllSongs();
+
+                    if (songsFromAPI.isEmpty()) {
                         System.out.println("No songs available.");
                     } else {
-                        for (Song song : songs) {
-                            // Get the artist's name using the artist ID
+                        for (Song song : songsFromAPI) {
+
                             Artist artist = artistMap.get(song.getArtistId());
                             String artistName = (artist != null) ? artist.getName() : "Unknown Artist";
 
                             System.out.println(artistName + " - " + song.getTitle());
                         }
                     }
-                    scanner.nextLine(); // Keeps the scanner from skipping input
+                    scanner.nextLine();
                 }
                 case 2 -> {
 
@@ -99,23 +100,28 @@ public class Main {
                 case 3 -> {
                     System.out.println("\nViewing albums by artist...");
                     scanner.nextLine();
-                    System.out.println("Enter the artists name: ");
+                    System.out.println("Enter the artist's name: ");
                     String artistName = scanner.nextLine();
                     boolean albumsFound = false;
 
-                    for (Album album : albums) {
+
+                    List<Album> albumsFromAPI = restClient.getAllAlbums();
+
+                    for (Album album : albumsFromAPI) {
                         if (album.getArtist().getName().equalsIgnoreCase(artistName)) {
-                            System.out.println(
-                                    "Album by " + artistName + ": " + album.getTitle() + ", " + album.getReleaseYear());
+                            System.out.println("Album by " + artistName + ": " + album.getTitle() + ", " + album.getReleaseYear());
                             albumsFound = true;
                         }
-
-                        if (!albumsFound) {
-                            System.out.println("No albums found for this artist. Please try another!");
-                        }
                     }
-                    scanner.nextLine(); // Probably optional
+
+                    if (!albumsFound) {
+                        System.out.println("No albums found for this artist. Please try another!");
+                    }
+
+                    System.out.println("\nPress Enter to return to the main menu...");
+                    scanner.nextLine();
                 }
+
                 case 4 -> {
                     System.out.println("\nAdding a new song...");
                     System.out.println("Enter song ID: ");
@@ -140,77 +146,19 @@ public class Main {
                     int newReleaseYear = scanner.nextInt();
                     scanner.nextLine();
 
-                    // create new song add to list
+
                     Song newSong = new Song(newId, newTitle, newArtistId, newGenre, newDuration, newReleaseYear);
-                    songs.add(newSong);
+                    restClient.addSong(newSong);
+
 
                     System.out.println("New song added: " + newTitle);
 
                     System.out.println("\nPress Enter to return to the main menu...");
                     scanner.nextLine();
-                    // Code goes here
+
                     scanner.nextLine(); // Probably optional
                 }
 
-                // case 6 -> {
-                // System.out.println("\nDeleting a song...");
-                // // Code goes here
-                // System.out.println("Enter song ID: ");
-                // int newId = scanner.nextInt();
-                // scanner.nextLine();
-
-                // System.out.println("Enter song title: ");
-                // String newTitle = scanner.nextLine();
-
-                // System.out.println("Enter artist ID: ");
-                // int newArtistId = scanner.nextInt();
-                // scanner.nextLine();
-
-                // System.out.println("Enter song Genre: ");
-                // String newGenre = scanner.nextLine();
-
-                // System.out.println("Enter song duration (e.g 4min30 seconds as '4.30'): ");
-                // double newDuration = scanner.nextDouble();
-                // scanner.nextLine();
-
-                // // create new song add to list
-                // Song newSong = new Song(newId, newTitle, newArtistId, newGenre, newDuration);
-                // songs.add(newSong);
-
-                // System.out.println("New song added: " + newTitle);
-
-                // System.out.println("\nPress Enter to return to the main menu...");
-                // scanner.nextLine();
-                // scanner.nextLine(); // Probably optional
-
-                // System.out.println("Enter song ID: ");
-                // int newId = scanner.nextInt();
-                // scanner.nextLine();
-
-                // System.out.println("Enter song title: ");
-                // String newTitle = scanner.nextLine();
-
-                // System.out.println("Enter artist ID: ");
-                // int newArtistId = scanner.nextInt();
-                // scanner.nextLine();
-
-                // System.out.println("Enter song Genre: ");
-                // String newGenre = scanner.nextLine();
-
-                // System.out.println("Enter song duration (e.g 4min30 seconds as '4.30'): ");
-                // double newDuration = scanner.nextDouble();
-                // scanner.nextLine();
-
-                // // create new song add to list
-                // Song newSong = new Song(newId, newTitle, newArtistId, newGenre, newDuration);
-                // songs.add(newSong);
-
-                // System.out.println("New song added: " + newTitle);
-
-                // System.out.println("\nPress Enter to return to the main menu...");
-                // scanner.nextLine();
-
-                // scanner.nextLine();
                 case 5 -> {
                     System.out.println("\nEditing song details...");
 
@@ -218,53 +166,60 @@ public class Main {
                     int editId = scanner.nextInt();
                     scanner.nextLine();
 
-                    // title
-                    boolean found = false;
-                    for (Song song : songs) {
+                    List<Song> songsFromAPI = restClient.getAllSongs();
+                    Song songToEdit = null;
+
+                    for (Song song : songsFromAPI) {
                         if (song.getId() == editId) {
-                            System.out.println("Enter new title ( or press Enter to keep current title: "
-                                    + song.getTitle() + "): ");
-                            String newTitle = scanner.nextLine();
-                            if (!newTitle.isBlank()) {
-                                song.setTitle(newTitle);
-                            }
-                            // Artist ID
-                            System.out.println(
-                                    "Enter new artist ID (or -1 to keep current ID: " + song.getArtistId() + "): ");
-                            int newArtistId = scanner.nextInt();
-                            scanner.nextLine();
-                            if (newArtistId != -1) {
-                                song.setArtistId(newArtistId);
-                            }
-                            // Genre
-                            System.out.println("Enter new genre (or press Enter to keep current genre: "
-                                    + song.getGenre() + "): ");
-                            String newGenre = scanner.nextLine();
-                            if (!newGenre.isBlank()) {
-                                song.setGenre(newGenre);
-                            }
-                            // duration
-                            System.out.println("Enter new duration (or -1 to keep current duration: "
-                                    + song.getDuration() + "): ");
-                            double newDuration = scanner.nextDouble();
-                            scanner.nextLine();
-                            if (newDuration != -1) {
-                                song.setDuration(newDuration);
-                            }
-                            // Updated
-                            System.out.println("Song updated!: " + song.getTitle());
-                            found = true;
+                            songToEdit = song;
                             break;
                         }
                     }
 
-                    if (!found) {
-                        System.out.println("No song found with IDL " + editId);
+                    if (songToEdit == null) {
+                        System.out.println("No song found with ID: " + editId);
+                        return;
                     }
 
-                    System.out.println("\nPress Enter to return to main menu...");
+                    System.out.println("Enter new title (or press Enter to keep current: " + songToEdit.getTitle() + "): ");
+                    String newTitle = scanner.nextLine();
+                    if (!newTitle.isBlank()) {
+                        songToEdit.setTitle(newTitle);
+                    }
+
+                    System.out.println("Enter new artist ID (or -1 to keep current: " + songToEdit.getArtistId() + "): ");
+                    int newArtistId = scanner.nextInt();
+                    scanner.nextLine();
+                    if (newArtistId != -1) {
+                        songToEdit.setArtistId(newArtistId);
+                    }
+
+                    System.out.println("Enter new genre (or press Enter to keep current: " + songToEdit.getGenre() + "): ");
+                    String newGenre = scanner.nextLine();
+                    if (!newGenre.isBlank()) {
+                        songToEdit.setGenre(newGenre);
+                    }
+
+                    System.out.println("Enter new duration (or -1 to keep current: " + songToEdit.getDuration() + "): ");
+                    double newDuration = scanner.nextDouble();
+                    scanner.nextLine();
+                    if (newDuration != -1) {
+                        songToEdit.setDuration(newDuration);
+                    }
+
+                    System.out.println("Enter new release year (or -1 to keep current: " + songToEdit.getReleaseYear() + "): ");
+                    int newReleaseYear = scanner.nextInt();
+                    scanner.nextLine();
+                    if (newReleaseYear != -1) {
+                        songToEdit.setReleaseYear(newReleaseYear);
+                    }
+
+                    restClient.updateSong(editId, songToEdit);
+
+                    System.out.println("\nPress Enter to return to the main menu...");
                     scanner.nextLine();
                 }
+
                 case 6 -> {
                     System.out.println("\nDeleting a song...");
 
