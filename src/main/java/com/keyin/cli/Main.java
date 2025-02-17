@@ -13,14 +13,14 @@ public class Main {
 
         // Just some test songs
         List<Song> songs = new ArrayList<>();
-        songs.add(new Song(1, "Bohemian Rhapsody", 1, "Rock", 5.55));
-        songs.add(new Song(2, "Billie Jean", 2, "Pop", 4.54));
-        songs.add(new Song(3, "Imagine", 103, "Rock", 3.12));
+        songs.add(new Song(1, "Bohemian Rhapsody", 1, "Rock", 5.55, 1975 ));
+        songs.add(new Song(2, "Billie Jean", 2, "Pop", 4.54, 1982));
+        songs.add(new Song(3, "Imagine", 103, "Rock", 3.12, 1971));
 
-        List<Song> album1Songs = List.of(new Song(1, "Hey Jude", 101, "Rock", 4.50),
-                new Song(2, "Let It Be", 101, "Rock", 3.50));
-        List<Song> album2Songs = List.of(new Song(3, "Bad Guy", 102, "Pop", 4.10),
-                new Song(4, "When The Party's Over", 102, "Pop", 3.30));
+        List<Song> album1Songs = List.of(new Song(1, "Hey Jude", 101, "Rock", 4.50, 1968),
+                new Song(2, "Let It Be", 101, "Rock", 3.50, 1970));
+        List<Song> album2Songs = List.of(new Song(3, "Bad Guy", 102, "Pop", 4.10, 2019),
+                new Song(4, "When The Party's Over", 102, "Pop", 3.30, 2018));
 
         Artist artist1 = new Artist(1, "The Beatles", 1960, "Rock", "UK", null);
         Artist artist2 = new Artist(2, "Billie Eilish", 2015, "Pop", "USA", null);
@@ -135,8 +135,12 @@ public class Main {
                     double newDuration = scanner.nextDouble();
                     scanner.nextLine();
 
+                    System.out.println("Enter song release year: ");
+                    int newReleaseYear = scanner.nextInt();
+                    scanner.nextLine();
+
                     // create new song add to list
-                    Song newSong = new Song(newId, newTitle, newArtistId, newGenre, newDuration);
+                    Song newSong = new Song(newId, newTitle, newArtistId, newGenre, newDuration, newReleaseYear);
                     songs.add(newSong);
 
                     System.out.println("New song added: " + newTitle);
