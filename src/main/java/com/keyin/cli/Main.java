@@ -92,7 +92,6 @@ public class Main {
                     if (!artistFound) {
                         System.out.println("Could not find artist. Please try another!");
                     }
-
                     scanner.nextLine(); // Probably optional
 
                 }
@@ -110,16 +109,33 @@ public class Main {
                             albumsFound = true;
                         }
 
-                        if (!albumsFound) {
-                            System.out.println("No albums found for this artist. Please try another!");
-                        }
+                    }
+                    if (!albumsFound) {
+                        System.out.println("No albums found for this artist. Please try another!");
                     }
                     scanner.nextLine(); // Probably optional
                 }
                 case 4 -> {
                     System.out.println("\nAdding a new song...");
-                    System.out.println("Enter song ID: ");
-                    int newId = scanner.nextInt();
+
+                    int newId;
+                    boolean isDuplicate;
+
+                    do {
+                        isDuplicate = false;
+                        System.out.println("Enter song ID: ");
+                        newId = scanner.nextInt();
+                        scanner.nextLine();
+
+                        for (Song song : songs) {
+                            if (song.getId() == newId) {
+                                System.out.println("A song with this id exists, Please enter a new song ID.");
+                                isDuplicate = true;
+                                break;
+                            }
+                        }
+                    } while (isDuplicate);
+
                     scanner.nextLine();
 
                     System.out.println("Enter song title: ");
@@ -300,9 +316,9 @@ public class Main {
                             albumFound = true;
                             break;
                         }
-                        if (!albumFound) {
-                            System.out.println("Album with this title not found. Please try another!");
-                        }
+                    }
+                    if (!albumFound) {
+                        System.out.println("Album with this title not found. Please try another!");
                     }
                     scanner.nextLine(); // Probably optional
                 }
