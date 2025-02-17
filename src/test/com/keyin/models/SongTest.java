@@ -13,8 +13,9 @@ public class SongTest {
         int expectedArtistId = 101;
         String expectedGenre = "Rap";
         double expectedDuration = 4.05;
+        int expectedReleaseYear = 2009;
 
-        Song song = new Song(expectedId,expectedTitle, expectedArtistId, expectedGenre,expectedDuration);
+        Song song = new Song(expectedId,expectedTitle, expectedArtistId, expectedGenre,expectedDuration, expectedReleaseYear);
 
         assertEquals(expectedId, song.getId());
         assertEquals(expectedTitle, song.getTitle());
@@ -30,8 +31,9 @@ public class SongTest {
         int expectedArtistId = 102;
         String expectedGenre = "Rock-Blues";
         double expectedDuration = 4.09;
+        int expectedReleaseYear = 2005;
 
-        Song song = new Song(expectedId,expectedTitle, expectedArtistId, expectedGenre,expectedDuration);
+        Song song = new Song(expectedId,expectedTitle, expectedArtistId, expectedGenre,expectedDuration, expectedReleaseYear);
 
         assertEquals(expectedId, song.getId());
         assertEquals(expectedTitle, song.getTitle());

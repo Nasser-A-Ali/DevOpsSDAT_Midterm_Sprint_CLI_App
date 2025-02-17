@@ -1,5 +1,6 @@
-package test.com.keyin.models;
+package com.keyin.models;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
@@ -7,21 +8,30 @@ import java.util.ArrayList;
 
 import com.keyin.models.Album;
 import com.keyin.models.Artist;
+import com.keyin.models.Song;  // Import Song if needed
 
 public class AlbumTest {
 
     private Album album;
     private Artist artist;
 
+    @BeforeEach  // Use @BeforeEach to initialize before each test
     public void setUp() {
 
-        List<String> tracks = new ArrayList<>();
-        tracks.add("Getting Older");
-        tracks.add("Lost Cause");
+        List<Song> tracks = new ArrayList<>();  // Tracks should be List<Song>
 
-        artist = new Artist("Billie Eilish", 2015, "pop", "USA");
-        album = new Album("Happier Than Ever", artist, 2021, 16, tracks, "Alternative");
+        // Fix Artist instantiation (int ID first)
+        artist = new Artist(1, "Billie Eilish", 2015, "Pop", "USA", null);
+
+        // Fix Songs (pass artist ID instead of object, fix releaseYear)
+        tracks.add(new Song(1, "Getting Older", 1, "Pop", 240.0, 2021));
+        tracks.add(new Song(2, "Lost Cause", 1, "Pop", 180.0, 2021));
+
+        // Fix Album instantiation (int ID first)
+        album = new Album(1, "Happier Than Ever", artist, 2021, 16, tracks, "Alternative");
     }
+
+
 
     @Test
     public void testAlbumConstructor() {
@@ -35,7 +45,7 @@ public class AlbumTest {
 
     @Test
     public void testSettersAndGetters() {
-        Artist artist2 = new Artist("Vance Joy", 2014, "Alternative", "Australia");
+        Artist artist2 = new Artist(2, "Vance Joy", 2014, "Alternative", "Australia", null);
 
         album.setArtist(artist2);
         album.setTitle("Nation of Two");
@@ -48,6 +58,5 @@ public class AlbumTest {
         assertEquals(2018, album.getReleaseYear());
         assertEquals(13, album.getNumberOfSongs());
         assertEquals("Alternative", album.getGenre());
-
     }
 }
