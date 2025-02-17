@@ -39,6 +39,7 @@ public class Main {
         Map<Integer, Artist> artistMap = new HashMap<>();
         artistMap.put(artist1.getId(), artist1);
         artistMap.put(artist2.getId(), artist2);
+        
 
         while (true) {
             // These options were just some filler options. They don't need to be the final
