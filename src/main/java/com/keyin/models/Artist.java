@@ -18,7 +18,7 @@ public class Artist {
     @JsonProperty("country")
     private String country;
 
-    // ✅ Add a no-args constructor for Jackson
+
     public Artist() {
     }
 
