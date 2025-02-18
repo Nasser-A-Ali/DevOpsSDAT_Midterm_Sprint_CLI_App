@@ -21,7 +21,7 @@ public class AlbumTest {
         List<Song> tracks = new ArrayList<>();  // Tracks should be List<Song>
 
         // Fix Artist instantiation (int ID first)
-        artist = new Artist(1, "Billie Eilish", 2015, "Pop", "USA", null, null);
+        artist = new Artist(1, "Billie Eilish", 2015, "Pop", "USA", null);
 
         // Fix Songs (pass artist ID instead of object, fix releaseYear)
         tracks.add(new Song(1, "Getting Older", 1, "Pop", 240.0, 2021));
@@ -45,7 +45,7 @@ public class AlbumTest {
 
     @Test
     public void testSettersAndGetters() {
-        Artist artist2 = new Artist(2, "Vance Joy", 2014, "Alternative", "Australia", null, null);
+        Artist artist2 = new Artist(2, "Vance Joy", 2014, "Alternative", "Australia", null);
 
         album.setArtist(artist2);
         album.setTitle("Nation of Two");
