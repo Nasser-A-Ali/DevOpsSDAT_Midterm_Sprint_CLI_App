@@ -1,4 +1,6 @@
 package com.keyin.client;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -56,10 +58,14 @@ public class RESTClient {
 
     public List<Album> getAllAlbums() {
         List<Album> albums = new ArrayList<>();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(serverURL)).build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/albums"))  // Ensure correct endpoint
+                .build();
 
         try {
             HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+
             if (response.statusCode() == 200) {
                 albums = buildAlbumListFromResponse(response.body());
             } else {
@@ -72,12 +78,19 @@ public class RESTClient {
         return albums;
     }
 
+
     public List<Artist> getAllArtists() {
         List<Artist> artists = new ArrayList<>();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(serverURL)).build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/artists"))  // Ensure correct endpoint
+                .build();
 
         try {
             HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+
+            System.out.println("Raw API Response for Artists: " + response.body());
+
             if (response.statusCode() == 200) {
                 artists = buildArtistListFromResponse(response.body());
             } else {
@@ -89,6 +102,7 @@ public class RESTClient {
 
         return artists;
     }
+
 
     public List<Song> getAllSongs() {
         List<Song> songs = new ArrayList<>();
@@ -141,13 +155,12 @@ public class RESTClient {
 
         try {
             HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+
             if (response.statusCode() == 200) {
                 ObjectMapper mapper = new ObjectMapper();
-                mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-
                 return mapper.readValue(response.body(), Artist.class);
             } else {
-                System.out.println("Failed to fetch artist. Error: " + response.statusCode());
+                System.out.println("Error fetching artist: " + response.statusCode());
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -157,36 +170,55 @@ public class RESTClient {
     }
 
 
-
     public List<Album> buildAlbumListFromResponse(String response) throws JsonProcessingException {
-        List<Album> albums = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-        List<Album> albumList = mapper.readValue(response, new TypeReference<List<Album>>() {});
+        JsonNode rootNode = mapper.readTree(response);
+
+
+        if (rootNode.isArray()) {
+            return mapper.readValue(response, new TypeReference<List<Album>>() {});
 
         for (Album album : albumList) {
 //          System.out.println("Album ID: " + album.getId());
             albums.add(album);
+
         }
 
-        return albums;
+        JsonNode embeddedNode = rootNode.get("_embedded");  // Check if albums are nested
+
+        if (embeddedNode != null && embeddedNode.has("albums")) {
+            JsonNode albumsNode = embeddedNode.get("albums");
+            return mapper.readValue(albumsNode.toString(), new TypeReference<List<Album>>() {});
+        }
+
+        System.out.println("Warning: No albums found in API response.");
+        return new ArrayList<>();
     }
 
+
     public List<Artist> buildArtistListFromResponse(String response) throws JsonProcessingException {
-        List<Artist> artists = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-        List<Artist> artistList = mapper.readValue(response, new TypeReference<List<Artist>>() {});
+        JsonNode rootNode = mapper.readTree(response);
 
-        for (Artist artist : artistList) {
-            System.out.println("Artist ID: " + artist.getId());
-            artists.add(artist);
+        if (rootNode.isArray()) {
+            return mapper.readValue(response, new TypeReference<List<Artist>>() {});
         }
 
-        return artists;
+        JsonNode embeddedNode = rootNode.get("_embedded");
+
+        if (embeddedNode != null && embeddedNode.has("artists")) {
+            JsonNode artistsNode = embeddedNode.get("artists");
+            return mapper.readValue(artistsNode.toString(), new TypeReference<List<Artist>>() {});
+        }
+
+        System.out.println("Warning: No artists found in API response.");
+        return new ArrayList<>();
     }
+
 
     public List<Song> buildSongListFromResponse(String response) throws JsonProcessingException {
         List<Song> songs = new ArrayList<>();
@@ -209,9 +241,6 @@ public class RESTClient {
         System.out.println("Warning: No songs found in API response.");
         return songs;
     }
-
-
-
 
 
     public void addSong(Song song) {
@@ -274,18 +303,21 @@ public class RESTClient {
 
     public void deleteSong(long id) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverURL + "/songs/" + id))
+                .uri(URI.create(serverURL + "/song/" + id))
                 .DELETE()
                 .build();
 
         try {
             HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+
             if (response.statusCode() == 204) {
-                System.out.println("Song deleted successfully.");
+                System.out.println("Song with ID " + id + " deleted successfully.");
             } else {
                 System.out.println("Failed to delete song. Error: " + response.statusCode());
+                return;
             }
         } catch (IOException | InterruptedException e) {
+            System.out.println("An error occurred while deleting the song.");
             e.printStackTrace();
         }
     }
@@ -309,5 +341,26 @@ public class RESTClient {
         return albums;
     }
 
+    public Artist getArtistByName(String name) {
+        try {
+            String encodedName = URLEncoder.encode(name, StandardCharsets.UTF_8);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(serverURL + "/artists/search/findByName?name=" + encodedName))
+                    .build();
 
+            HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+                return mapper.readValue(response.body(), Artist.class);
+            } else {
+                System.out.println("Error fetching artist: " + response.statusCode());
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 

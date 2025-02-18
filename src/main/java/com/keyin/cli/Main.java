@@ -48,21 +48,16 @@ public class Main {
                     System.out.print("Enter the artist's name: ");
                     String artistName = scanner.nextLine();
 
-                    List<Artist> artists = restClient.getAllArtists();
-                    boolean artistFound = false;
+                    Artist artist = restClient.getArtistByName(artistName);
 
-                    for (Artist artist : artists) {
-                        if (artist.getName().equalsIgnoreCase(artistName)) {
-                            System.out.println("Artist Found: " + artist);
-                            artistFound = true;
-                            break;
-                        }
-                    }
-
-                    if (!artistFound) {
+                    if (artist != null) {
+                        System.out.println("Artist Found: " + artist.getName());
+                    } else {
                         System.out.println("Could not find artist. Please try another!");
                     }
                     break;
+
+
 
                 case 3:
                     System.out.println("\nViewing albums by artist...");
@@ -159,8 +154,15 @@ public class Main {
                         break;
                     }
 
-                    restClient.deleteSong(deleteId);
-                    System.out.println("Song with ID " + deleteId + " deleted!");
+                    System.out.print("Are you sure you want to delete this song? (yes/no): ");
+                    String confirmation = scanner.nextLine().trim().toLowerCase();
+
+                    if (confirmation.equals("yes")) {
+                        restClient.deleteSong(deleteId);
+                        System.out.println("Song with ID " + deleteId + " deleted!");
+                    } else {
+                        System.out.println("Deletion canceled.");
+                    }
                     break;
 
                 case 7:
