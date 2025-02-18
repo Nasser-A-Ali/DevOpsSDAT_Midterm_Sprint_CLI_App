@@ -157,13 +157,13 @@ public class RESTClient {
     }
 
 
-
     public List<Album> buildAlbumListFromResponse(String response) throws JsonProcessingException {
         List<Album> albums = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-        List<Album> albumList = mapper.readValue(response, new TypeReference<List<Album>>() {});
+        List<Album> albumList = mapper.readValue(response, new TypeReference<List<Album>>() {
+        });
 
         for (Album album : albumList) {
 //          System.out.println("Album ID: " + album.getId());
@@ -178,7 +178,8 @@ public class RESTClient {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-        List<Artist> artistList = mapper.readValue(response, new TypeReference<List<Artist>>() {});
+        List<Artist> artistList = mapper.readValue(response, new TypeReference<List<Artist>>() {
+        });
 
         for (Artist artist : artistList) {
             System.out.println("Artist ID: " + artist.getId());
@@ -196,22 +197,21 @@ public class RESTClient {
         JsonNode rootNode = mapper.readTree(response);
 
         if (rootNode.isArray()) {
-            return mapper.readValue(response, new TypeReference<List<Song>>() {});
+            return mapper.readValue(response, new TypeReference<List<Song>>() {
+            });
         }
 
         JsonNode embeddedNode = rootNode.get("_embedded");
 
         if (embeddedNode != null && embeddedNode.has("songs")) {
             JsonNode songsNode = embeddedNode.get("songs");
-            return mapper.readValue(songsNode.toString(), new TypeReference<List<Song>>() {});
+            return mapper.readValue(songsNode.toString(), new TypeReference<List<Song>>() {
+            });
         }
 
         System.out.println("Warning: No songs found in API response.");
         return songs;
     }
-
-
-
 
 
     public void addSong(Song song) {
@@ -225,7 +225,7 @@ public class RESTClient {
         }
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverURL + "/song"))  
+                .uri(URI.create(serverURL + "/song"))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
@@ -289,6 +289,7 @@ public class RESTClient {
             e.printStackTrace();
         }
     }
+
     public List<Album> getAlbumsByArtistId(long artistId) {
         List<Album> albums = new ArrayList<>();
         HttpRequest request = HttpRequest.newBuilder()
@@ -308,6 +309,7 @@ public class RESTClient {
 
         return albums;
     }
+}
 
 
 
