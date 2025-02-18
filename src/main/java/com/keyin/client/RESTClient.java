@@ -100,7 +100,6 @@ public class RESTClient {
             HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                System.out.println("Raw API Response: " + response.body()); // Debug print
                 songs = buildSongListFromResponse(response.body());
             } else {
                 System.out.println("Error Status Code: " + response.statusCode());
@@ -194,8 +193,6 @@ public class RESTClient {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-        System.out.println("Raw API Response for Songs: " + response); // Debugging
-
         JsonNode rootNode = mapper.readTree(response);
 
         if (rootNode.isArray()) {
@@ -256,7 +253,7 @@ public class RESTClient {
         }
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverURL + "/song/" + id))  //
+                .uri(URI.create(serverURL + "/songs/" + id))  // Ensure this URL is correct
                 .header("Content-Type", "application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
@@ -266,12 +263,14 @@ public class RESTClient {
             if (response.statusCode() == 200) {
                 System.out.println("Song successfully updated!");
             } else {
-                System.out.println("Failed to update song. Error: " + response.statusCode());
+//                System.out.println("Failed to update song. Error: " + response.statusCode());
+//                System.out.println("Response Body: " + response.body());
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
+
 
     public void deleteSong(long id) {
         HttpRequest request = HttpRequest.newBuilder()
