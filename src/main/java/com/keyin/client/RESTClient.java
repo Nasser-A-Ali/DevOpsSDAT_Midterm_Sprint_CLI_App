@@ -1,6 +1,8 @@
 package com.keyin.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -90,11 +92,15 @@ public class RESTClient {
 
     public List<Song> getAllSongs() {
         List<Song> songs = new ArrayList<>();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(serverURL)).build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/songs")) // Directly hitting the correct endpoint
+                .build();
 
         try {
             HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+
             if (response.statusCode() == 200) {
+                System.out.println("Raw API Response: " + response.body()); // Debug print
                 songs = buildSongListFromResponse(response.body());
             } else {
                 System.out.println("Error Status Code: " + response.statusCode());
@@ -105,6 +111,7 @@ public class RESTClient {
 
         return songs;
     }
+
 
     public List<Album> buildAlbumListFromResponse(String response) throws JsonProcessingException {
         List<Album> albums = new ArrayList<>();
@@ -141,15 +148,31 @@ public class RESTClient {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-        List<Song> songList = mapper.readValue(response, new TypeReference<List<Song>>() {});
 
-        for (Song song : songList) {
-            System.out.println("Song ID: " + song.getId());
-            songs.add(song);
+        System.out.println("Raw API Response for Songs: " + response);
+
+
+        JsonNode rootNode = mapper.readTree(response);
+
+
+        if (rootNode.isArray()) {
+            return mapper.readValue(response, new TypeReference<List<Song>>() {});
         }
 
+        
+        JsonNode embeddedNode = rootNode.get("_embedded");
+
+        if (embeddedNode != null && embeddedNode.has("songs")) {
+            JsonNode songsNode = embeddedNode.get("songs");
+            return mapper.readValue(songsNode.toString(), new TypeReference<List<Song>>() {});
+        }
+
+        System.out.println("Warning: No songs found in API response.");
         return songs;
     }
+
+
+
 
     public void addSong(Song song) {
         ObjectMapper mapper = new ObjectMapper();
@@ -169,7 +192,7 @@ public class RESTClient {
 
         try {
             HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 201) { // HTTP 201 Created
+            if (response.statusCode() == 201) {
                 System.out.println("Song successfully added to API!");
             } else {
                 System.out.println("Error: " + response.statusCode());
@@ -206,6 +229,24 @@ public class RESTClient {
             e.printStackTrace();
         }
     }
+
+    public void deleteSong(long id) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/song/" + id))
+                .build();
+
+        try {
+            HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200 || response.statusCode() == 204) {
+                System.out.println("Song with ID " + id + " successfully deleted!");
+            } else {
+                System.out.println("Failed to delete song. Error: " + response.statusCode());
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }

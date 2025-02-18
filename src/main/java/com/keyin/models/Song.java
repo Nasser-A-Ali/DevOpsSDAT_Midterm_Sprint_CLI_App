@@ -1,12 +1,28 @@
 package com.keyin.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Song {
+    @JsonProperty("id")
     private int id;
+
+    @JsonProperty("title")
     private String title;
+
+    @JsonProperty("artistId")
     private int artistId;
+
+    @JsonProperty("genre")
     private String genre;
+
+    @JsonProperty("duration")
     private double duration;
+
+    @JsonProperty("releaseYear")
     private int releaseYear;
+
+    public Song() {
+    }
 
     public Song(int id, String title, int artistId, String genre, double duration) {
         this(id, title, artistId, genre, duration, -1);
@@ -20,7 +36,6 @@ public class Song {
         this.duration = duration;
         this.releaseYear = releaseYear;
     }
-
 
     public int getId() {
         return id;
@@ -81,5 +96,4 @@ public class Song {
                 ", releaseYear=" + releaseYear +
                 '}';
     }
-
 }

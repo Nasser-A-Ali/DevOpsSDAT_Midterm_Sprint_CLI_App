@@ -227,18 +227,27 @@ public class Main {
                     int deleteId = scanner.nextInt();
                     scanner.nextLine();
 
-                    boolean removed = songs.removeIf(song -> song.getId() == deleteId);
+                    List<Song> songsFromAPI = restClient.getAllSongs();
+                    boolean removed = false;
+
+                    for (Song song : songsFromAPI) {
+                        if (song.getId() == deleteId) {
+                            restClient.deleteSong(deleteId);  // Ensure this method exists in RESTClient
+                            removed = true;
+                            break;
+                        }
+                    }
 
                     if (removed) {
-                        System.out.println("Song with ID: " + deleteId + " removed!");
+                        System.out.println("Song with ID: " + deleteId + " deleted!");
                     } else {
                         System.out.println("No song with ID: " + deleteId + " found.");
                     }
 
                     System.out.println("\nPress Enter to return to the main menu...");
-
                     scanner.nextLine();
                 }
+
                 case 7 -> {
                     System.out.println("\nViewing songs in an album...");
                     scanner.nextLine();
