@@ -289,7 +289,6 @@ public class RESTClient {
             e.printStackTrace();
         }
     }
-
     public List<Album> getAlbumsByArtistId(long artistId) {
         List<Album> albums = new ArrayList<>();
         HttpRequest request = HttpRequest.newBuilder()
@@ -312,4 +311,3 @@ public class RESTClient {
 
 
 
-}
