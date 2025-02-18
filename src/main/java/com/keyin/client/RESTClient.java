@@ -170,8 +170,6 @@ public class RESTClient {
     }
 
 
-
-
     public List<Album> buildAlbumListFromResponse(String response) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
@@ -299,18 +297,21 @@ public class RESTClient {
 
     public void deleteSong(long id) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverURL + "/song/" + id))  // No "/" before "song"
+                .uri(URI.create(serverURL + "/song/" + id))
                 .DELETE()
                 .build();
 
         try {
             HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+
             if (response.statusCode() == 204) {
-                System.out.println("Song deleted successfully.");
+                System.out.println("Song with ID " + id + " deleted successfully.");
             } else {
                 System.out.println("Failed to delete song. Error: " + response.statusCode());
+                return;
             }
         } catch (IOException | InterruptedException e) {
+            System.out.println("An error occurred while deleting the song.");
             e.printStackTrace();
         }
     }
@@ -338,9 +339,5 @@ public class RESTClient {
 
         return null;
     }
-
-
-
-
 
 }
