@@ -289,8 +289,4 @@ public class RESTClient {
             e.printStackTrace();
         }
     }
-
-
-
-
 }
