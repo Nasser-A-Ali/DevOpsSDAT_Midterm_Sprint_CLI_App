@@ -315,6 +315,25 @@ public class RESTClient {
             e.printStackTrace();
         }
     }
+    public List<Album> getAlbumsByArtistId(long artistId) {
+        List<Album> albums = new ArrayList<>();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/albums?artist_id=" + artistId))
+                .build();
+        try {
+            HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                System.out.println("Album Search Successful!");
+                albums = buildAlbumListFromResponse(response.body());
+            } else {
+                System.out.println("Error Status Code: " + response.statusCode());
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return albums;
+    }
 
 
     public Artist getArtistByName(String name) {
