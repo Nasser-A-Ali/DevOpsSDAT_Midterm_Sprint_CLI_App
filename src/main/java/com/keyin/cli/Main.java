@@ -66,20 +66,19 @@ public class Main {
 
                 case 3:
                     System.out.println("\nViewing albums by artist...");
-                    System.out.print("Enter the artist's name: ");
-                    String artistSearch = scanner.nextLine();
-                    boolean albumsFound = false;
+                    System.out.print("Enter the artist's id: ");
+                    long artistId = scanner.nextLong();
+                    scanner.nextLine();
 
-                    List<Album> albums = restClient.getAllAlbums();
-                    for (Album album : albums) {
-                        if (album.getArtist().getName().equalsIgnoreCase(artistSearch)) {
-                            System.out.println("Album by " + artistSearch + ": " + album.getTitle() + ", " + album.getReleaseYear());
-                            albumsFound = true;
+                    List<Album> albumsFromAPI = restClient.getAlbumsByArtistId(artistId);
+                    if (albumsFromAPI.isEmpty()) {
+                        System.out.println("No albums by this artist, Please try another!");
+                    } else{
+                        String artistsName = albumsFromAPI.get(0).getArtist().getName();
+                        System.out.println("Albums by " + artistsName + ":");
+                        for (Album album : albumsFromAPI){
+                            System.out.println(album.getTitle() + ", "  + album.getReleaseYear());
                         }
-                    }
-
-                    if (!albumsFound) {
-                        System.out.println("No albums found for this artist. Please try another!");
                     }
                     break;
 
@@ -92,8 +91,8 @@ public class Main {
                     long newArtistId = scanner.nextLong();
                     scanner.nextLine();
 
-                    Artist artist = restClient.getArtistById(newArtistId);
-                    if (artist == null) {
+                    Artist newArtist = restClient.getArtistById(newArtistId);
+                    if (newArtist == null) {
                         System.out.println("Invalid artist ID. Please enter an existing artist.");
                         break;
                     }
@@ -108,7 +107,7 @@ public class Main {
                     System.out.println("Enter song release date (YYYY-MM-DD): ");
                     String releaseDate = scanner.nextLine();
 
-                    Song newSong = new Song(0, newTitle, artist, newGenre, newDuration, releaseDate);
+                    Song newSong = new Song(0, newTitle, newArtist, newGenre, newDuration, releaseDate);
                     restClient.addSong(newSong);
 
                     System.out.println("New song added: " + newTitle);
