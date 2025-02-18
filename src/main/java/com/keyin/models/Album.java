@@ -12,9 +12,15 @@ public class Album {
     private List<Song> listOfSongs;
 
 
+
     public Album() { }
 
     public Album(long id, String title, Artist artist, int releaseYear, int numberOfSongs, String genre, List<Song> listOfSongs) {
+
+    public Album(){};
+
+    public Album(int id, String title, Artist artist, long releaseYear, int numberOfSongs, List<Song> listOfSongs,
+
         this.id = id;
         this.title = title;
         this.artist = artist;
