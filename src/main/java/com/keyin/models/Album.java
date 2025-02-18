@@ -11,8 +11,6 @@ public class Album {
     private List<Song> listOfSongs;
     private String genre;
 
-    public Album(){};
-
     public Album(int id, String title, Artist artist, long releaseYear, int numberOfSongs, List<Song> listOfSongs,
             String genre) {
         this.id = id;

@@ -1,10 +1,8 @@
 package com.keyin.models;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.testng.annotations.Test;
 import org.testng.Assert;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ArtistTest {
 
@@ -20,15 +18,13 @@ public class ArtistTest {
         Album expectedAlbum = new Album(1, "Greatest Hits", null, 1981, 10, new ArrayList<Song>(), "Rock");
 
         // Now pass the expectedAlbum to Artist
-        List<Song> expectedListOfSongs = List.of();
-        Artist artist = new Artist(expectedId, expectedName, (int) expectedDebutYear, expectedGenre, expectedCountry, expectedAlbum, expectedListOfSongs );
+        Artist artist = new Artist(expectedId, expectedName, expectedDebutYear, expectedGenre, expectedCountry, expectedAlbum);
 
         // Assertions
         Assert.assertEquals(expectedName, artist.getName());
         Assert.assertEquals(expectedDebutYear, artist.getDebutYear());
         Assert.assertEquals(expectedGenre, artist.getGenre());
         Assert.assertEquals(expectedCountry, artist.getCountry());
-        Assert.assertEquals(expectedListOfSongs, artist.getListOfSongs());
     }
 
 }
