@@ -21,7 +21,7 @@ public class ArtistTest {
 
         // Now pass the expectedAlbum to Artist
         List<Song> expectedListOfSongs = List.of();
-        Artist artist = new Artist(expectedId, expectedName, expectedDebutYear, expectedGenre, expectedCountry, expectedAlbum, expectedListOfSongs );
+        Artist artist = new Artist(expectedId, expectedName, (int) expectedDebutYear, expectedGenre, expectedCountry, expectedAlbum, expectedListOfSongs );
 
         // Assertions
         Assert.assertEquals(expectedName, artist.getName());
