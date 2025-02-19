@@ -59,7 +59,7 @@ public class RESTClient {
     public List<Album> getAllAlbums() {
         List<Album> albums = new ArrayList<>();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverURL + "/albums"))  // Ensure correct endpoint
+                .uri(URI.create(serverURL + "/albums"))
                 .build();
 
         try {
@@ -82,7 +82,7 @@ public class RESTClient {
     public List<Artist> getAllArtists() {
         List<Artist> artists = new ArrayList<>();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverURL + "/artists"))  // Ensure correct endpoint
+                .uri(URI.create(serverURL + "/artists"))
                 .build();
 
         try {
