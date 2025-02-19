@@ -20,9 +20,8 @@ public class Main {
             System.out.println("3: View albums by an artist");
             System.out.println("4: Add new song");
             System.out.println("5: Edit song details");
-            System.out.println("6: Delete a song");
-            System.out.println("7: View tracks in an album");
-            System.out.println("8: Exit");
+            System.out.println("6: View tracks in an album");
+            System.out.println("7: Exit");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -142,29 +141,6 @@ public class Main {
                     break;
 
                 case 6:
-                    System.out.println("\nDeleting a song...");
-                    System.out.print("Enter the ID of the song to delete: ");
-                    long deleteId = scanner.nextLong();
-                    scanner.nextLine();
-
-                    Song song = restClient.getSongById(deleteId);
-                    if (song == null) {
-                        System.out.println("No song found with ID: " + deleteId);
-                        break;
-                    }
-
-                    System.out.print("Are you sure you want to delete this song? (yes/no): ");
-                    String confirmation = scanner.nextLine().trim().toLowerCase();
-
-                    if (confirmation.equals("yes")) {
-                        restClient.deleteSong(deleteId);
-                        System.out.println("Song with ID " + deleteId + " deleted!");
-                    } else {
-                        System.out.println("Deletion canceled.");
-                    }
-                    break;
-
-                case 7:
                     System.out.println("\nViewing songs in an album...");
                     System.out.print("Enter album title: ");
                     String albumTitle = scanner.nextLine();
@@ -187,7 +163,7 @@ public class Main {
                     }
                     break;
 
-                case 8:
+                case 7:
                     System.out.println("\nExiting the program. Goodbye!");
                     scanner.close();
                     return;
