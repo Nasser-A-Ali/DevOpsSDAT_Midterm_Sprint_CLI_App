@@ -9,23 +9,17 @@ import java.util.ArrayList;
 
 public class ArtistTest {
 
-    // Mock the Album dependency
     @Mock
     private Album mockedAlbum;
 
-    // Create an Artist instance
     private Artist artist;
 
-    // Initialize the mocks before each test
     @BeforeMethod
     public void setup() {
-        // Initialize mocks for the test class
         MockitoAnnotations.initMocks(this);
 
-        // Prepare mock behavior for Album (if needed, like when we need to stub methods)
         Mockito.when(mockedAlbum.getTitle()).thenReturn("Greatest Hits");
 
-        // Now create the Artist instance with the mocked Album
         artist = new Artist(1, "Queen", 1970, "Rock", "England");
     }
 
@@ -37,13 +31,11 @@ public class ArtistTest {
         String expectedGenre = "Rock";
         String expectedCountry = "England";
 
-        // Assertions for the Artist object
         Assert.assertEquals(artist.getName(), expectedName);
         Assert.assertEquals(artist.getDebutYear(), expectedDebutYear);
         Assert.assertEquals(artist.getGenre(), expectedGenre);
         Assert.assertEquals(artist.getCountry(), expectedCountry);
 
-        // Additional mock checks, if needed
         Assert.assertEquals(artist.getName(), "Queen");
     }
 }
