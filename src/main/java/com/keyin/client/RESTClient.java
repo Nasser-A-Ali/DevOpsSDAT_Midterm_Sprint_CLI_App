@@ -1,4 +1,6 @@
 package com.keyin.client;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -54,10 +56,14 @@ public class RESTClient {
 
     public List<Album> getAllAlbums() {
         List<Album> albums = new ArrayList<>();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(serverURL)).build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/albums"))
+                .build();
 
         try {
             HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+
             if (response.statusCode() == 200) {
                 albums = buildAlbumListFromResponse(response.body());
             } else {
@@ -70,12 +76,19 @@ public class RESTClient {
         return albums;
     }
 
+
     public List<Artist> getAllArtists() {
         List<Artist> artists = new ArrayList<>();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(serverURL)).build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/artists"))
+                .build();
 
         try {
             HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+
+            System.out.println("Raw API Response for Artists: " + response.body());
+
             if (response.statusCode() == 200) {
                 artists = buildArtistListFromResponse(response.body());
             } else {
@@ -87,6 +100,7 @@ public class RESTClient {
 
         return artists;
     }
+
 
     public List<Song> getAllSongs() {
         List<Song> songs = new ArrayList<>();
@@ -106,35 +120,93 @@ public class RESTClient {
         return songs;
     }
 
+    public Song getSongById(long id) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/songs/" + id))
+                .build();
+
+        try {
+            HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+                return mapper.readValue(response.body(), Song.class);
+            } else {
+                System.out.println("Failed to fetch song. Error: " + response.statusCode());
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    public Artist getArtistById(long id) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/artists/" + id))
+                .build();
+
+        try {
+            HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                ObjectMapper mapper = new ObjectMapper();
+                return mapper.readValue(response.body(), Artist.class);
+            } else {
+                System.out.println("Error fetching artist: " + response.statusCode());
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public List<Album> buildAlbumListFromResponse(String response) throws JsonProcessingException {
-        List<Album> albums = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-        List<Album> albumList = mapper.readValue(response, new TypeReference<List<Album>>() {});
+        JsonNode rootNode = mapper.readTree(response);
 
-        for (Album album : albumList) {
-            System.out.println("Album ID: " + album.getId());
-            albums.add(album);
+        if (rootNode.isArray()) {
+            return mapper.readValue(response, new TypeReference<List<Album>>() {});
         }
 
-        return albums;
+        JsonNode embeddedNode = rootNode.get("_embedded");  // Check if albums are nested
+
+        if (embeddedNode != null && embeddedNode.has("albums")) {
+            JsonNode albumsNode = embeddedNode.get("albums");
+            return mapper.readValue(albumsNode.toString(), new TypeReference<List<Album>>() {});
+        }
+
+        System.out.println("Warning: No albums found in API response.");
+        return new ArrayList<>();
     }
+
 
     public List<Artist> buildArtistListFromResponse(String response) throws JsonProcessingException {
-        List<Artist> artists = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-        List<Artist> artistList = mapper.readValue(response, new TypeReference<List<Artist>>() {});
+        JsonNode rootNode = mapper.readTree(response);
 
-        for (Artist artist : artistList) {
-            System.out.println("Artist ID: " + artist.getId());
-            artists.add(artist);
+        if (rootNode.isArray()) {
+            return mapper.readValue(response, new TypeReference<List<Artist>>() {});
         }
 
-        return artists;
+        JsonNode embeddedNode = rootNode.get("_embedded");
+
+        if (embeddedNode != null && embeddedNode.has("artists")) {
+            JsonNode artistsNode = embeddedNode.get("artists");
+            return mapper.readValue(artistsNode.toString(), new TypeReference<List<Artist>>() {});
+        }
+
+        System.out.println("Warning: No artists found in API response.");
+        return new ArrayList<>();
     }
+
 
     public List<Song> buildSongListFromResponse(String response) throws JsonProcessingException {
         List<Song> songs = new ArrayList<>();
@@ -149,5 +221,136 @@ public class RESTClient {
         }
 
         return songs;
+    }
+
+    public void addSong(Song song) {
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = "";
+
+        try {
+            requestBody = mapper.writeValueAsString(song);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/song"))  // Ensure this is correct
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        try {
+            HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 201 || response.statusCode() == 200) {
+                System.out.println("Song successfully added: " + song.getTitle());
+            } else {
+                System.out.println("Failed to add song. HTTP Error: " + response.statusCode());
+                System.out.println("Response Body: " + response.body());
+            }
+        } catch (IOException | InterruptedException e) {
+            System.out.println("An error occurred while adding the song.");
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public void updateSong(long id, Song song) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = "";
+
+        try {
+            requestBody = objectMapper.writeValueAsString(song);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/songs/" + id))  // Ensure this URL is correct
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        try {
+            HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                System.out.println("Song successfully updated!");
+            } else {
+//                System.out.println("Failed to update song. Error: " + response.statusCode());
+//                System.out.println("Response Body: " + response.body());
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void deleteSong(long id) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/song/" + id))
+                .DELETE()
+                .build();
+        try {
+            HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 204) {
+                System.out.println("Song with ID " + id + " deleted successfully.");
+            } else {
+                System.out.println("Failed to delete song. Error: " + response.statusCode());
+                return;
+            }
+        } catch (IOException | InterruptedException e) {
+            System.out.println("An error occurred while deleting the song.");
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    public List<Album> getAlbumsByArtistId(long artistId) {
+        List<Album> albums = new ArrayList<>();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/albums?artist_id=" + artistId))
+                .build();
+        try {
+            HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                System.out.println("Album Search Successful!");
+                albums = buildAlbumListFromResponse(response.body());
+            } else {
+                System.out.println("Error Status Code: " + response.statusCode());
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return albums;
+    }
+
+
+    public Artist getArtistByName(String name) {
+        try {
+            String encodedName = URLEncoder.encode(name, StandardCharsets.UTF_8);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(serverURL + "/artists/search/findByName?name=" + encodedName))
+                    .build();
+
+            HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+                return mapper.readValue(response.body(), Artist.class);
+            } else {
+                System.out.println("Error fetching artist: " + response.statusCode());
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

@@ -1,5 +1,9 @@
 package com.keyin.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true) // <-- Add this line
 public class Artist {
     private int id;
     private String name;
@@ -8,7 +12,11 @@ public class Artist {
     private String country;
     private Album album;
 
-    public Artist (int id, String name, long debutYear, String genre, String country, Album album) {
+
+    public Artist() {
+    }
+
+    public Artist(long id, String name, int debutYear, String genre, String country) {
         this.id = id;
         this.name = name;
         this.debutYear = debutYear;

@@ -3,91 +3,46 @@ package com.keyin.models;
 import java.util.List;
 
 public class Album {
-    private int id;
+    private long id;
     private String title;
     private Artist artist;
-    private long releaseYear;
+    private int releaseYear;
     private int numberOfSongs;
-    private List<Song> listOfSongs;
     private String genre;
+    private List<Song> listOfSongs;
 
-    public Album(int id, String title, Artist artist, long releaseYear, int numberOfSongs, List<Song> listOfSongs,
-            String genre) {
+
+    public Album() { }
+
+    public Album(long id, String title, Artist artist, int releaseYear, int numberOfSongs, String genre, List<Song> listOfSongs) {
         this.id = id;
         this.title = title;
         this.artist = artist;
         this.releaseYear = releaseYear;
         this.numberOfSongs = numberOfSongs;
-        this.listOfSongs = listOfSongs;
         this.genre = genre;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Artist getArtist() {
-        return artist;
-    }
-
-    public long getReleaseYear() {
-        return releaseYear;
-    }
-
-    public int getNumberOfSongs() {
-        return numberOfSongs;
-    }
-
-    public List<Song> getListOfSongs() {
-        return listOfSongs;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setArtist(Artist artist) {
-        this.artist = artist;
-    }
-
-    public void setReleaseYear(long releaseYear) {
-        this.releaseYear = releaseYear;
-    }
-
-    public void setNumberOfSongs(int numberOfSongs) {
-        this.numberOfSongs = numberOfSongs;
-    }
-
-    public void setTracks(List<Song> listOfSongs) {
         this.listOfSongs = listOfSongs;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
 
-    @Override
-    public String toString() {
-        return "Album{" +
-                "Id= " + getId() +
-                ", Title= " + getTitle() +
-                ", Artist= " + getArtist() +
-                ", Release Year= " + getReleaseYear() +
-                ", Number of Songs= " + getNumberOfSongs() +
-                ", Tracks= " + getListOfSongs() +
-                ", Genre= " + getGenre() +
-                "}";
-    }
+    public long getId() { return id; }
+    public void setId(long id) { this.id = id; }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public Artist getArtist() { return artist; }
+    public void setArtist(Artist artist) { this.artist = artist; }
+
+    public int getReleaseYear() { return releaseYear; }
+    public void setReleaseYear(int releaseYear) { this.releaseYear = releaseYear; }
+
+    public int getNumberOfSongs() { return numberOfSongs; }
+    public void setNumberOfSongs(int numberOfSongs) { this.numberOfSongs = numberOfSongs; }
+
+    public String getGenre() { return genre; }
+    public void setGenre(String genre) { this.genre = genre; }
+
+    public List<Song> getListOfSongs() { return listOfSongs; }
+    public void setListOfSongs(List<Song> listOfSongs) { this.listOfSongs = listOfSongs; }
 }

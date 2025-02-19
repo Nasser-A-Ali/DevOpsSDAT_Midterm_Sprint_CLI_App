@@ -52,9 +52,8 @@ public class Main {
             System.out.println("3: View albums by an artist");
             System.out.println("4: Add new song");
             System.out.println("5: Edit song details");
-            System.out.println("6: Delete a song");
-            System.out.println("7. View tracks in an album");
-            System.out.println("8: Exit");
+            System.out.println("6: View tracks in an album");
+            System.out.println("7: Exit");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
 
@@ -80,23 +79,18 @@ public class Main {
                     scanner.nextLine();
                     System.out.println("Enter the artist's name: ");
                     String artistName = scanner.nextLine();
-                    boolean artistFound = false;
 
-                    for (Artist artist : List.of(artist1, artist2))
-                        if (artist.getName().equalsIgnoreCase(artistName)) {
-                            System.out.println("Artist: " + artist);
-                            artistFound = true;
-                            break;
-                        }
+                    Artist artist = restClient.getArtistByName(artistName);
 
-                    if (!artistFound) {
+                    if (artist != null) {
+                        System.out.println("Artist Found: " + artist.getName());
+                    } else {
                         System.out.println("Could not find artist. Please try another!");
                     }
 
-                    scanner.nextLine(); // Probably optional
 
-                }
-                case 3 -> {
+
+                case 3:
                     System.out.println("\nViewing albums by artist...");
                     scanner.nextLine();
                     System.out.println("Enter the artists name: ");
@@ -129,6 +123,10 @@ public class Main {
                     int newArtistId = scanner.nextInt();
                     scanner.nextLine();
 
+
+                    Artist artistReference = new Artist();
+                    artistReference.setId(newArtistId);
+
                     System.out.println("Enter song Genre: ");
                     String newGenre = scanner.nextLine();
 
@@ -140,13 +138,18 @@ public class Main {
                     int newReleaseYear = scanner.nextInt();
                     scanner.nextLine();
 
-                    // create new song add to list
-                    Song newSong = new Song(newId, newTitle, newArtistId, newGenre, newDuration, newReleaseYear);
-                    songs.add(newSong);
+                    Song newSong = new Song(0, newTitle, artistReference, newGenre, newDuration, releaseDate);
+                    restClient.addSong(newSong);
 
                     System.out.println("New song added: " + newTitle);
 
-                    System.out.println("\nPress Enter to return to the main menu...");
+
+                    break;
+
+                case 5:
+                    System.out.println("\nEditing song details...");
+                    System.out.print("Enter the ID of the song you want to edit: ");
+                    long songId = scanner.nextLong();
                     scanner.nextLine();
                     // Code goes here
                     scanner.nextLine(); // Probably optional
@@ -262,29 +265,7 @@ public class Main {
                         System.out.println("No song found with IDL " + editId);
                     }
 
-                    System.out.println("\nPress Enter to return to main menu...");
-                    scanner.nextLine();
-                }
-                case 6 -> {
-                    System.out.println("\nDeleting a song...");
-
-                    System.out.println("Enter the ID of the song to delete: ");
-                    int deleteId = scanner.nextInt();
-                    scanner.nextLine();
-
-                    boolean removed = songs.removeIf(song -> song.getId() == deleteId);
-
-                    if (removed) {
-                        System.out.println("Song with ID: " + deleteId + " removed!");
-                    } else {
-                        System.out.println("No song with ID: " + deleteId + " found.");
-                    }
-
-                    System.out.println("\nPress Enter to return to the main menu...");
-
-                    scanner.nextLine();
-                }
-                case 7 -> {
+                case 6:
                     System.out.println("\nViewing songs in an album...");
                     scanner.nextLine();
                     System.out.println("Enter album title: ");
@@ -304,9 +285,12 @@ public class Main {
                             System.out.println("Album with this title not found. Please try another!");
                         }
                     }
-                    scanner.nextLine(); // Probably optional
-                }
-                case 8 -> {
+                    if (!albumFound) {
+                        System.out.println("Album not found. Please try another!");
+                    }
+                    break;
+
+                case 7:
                     System.out.println("\nExiting the program. Goodbye!");
                     scanner.close();
                     return;
