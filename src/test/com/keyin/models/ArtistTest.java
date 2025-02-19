@@ -1,10 +1,33 @@
 package com.keyin.models;
 
+import org.mockito.*;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.Assert;
+
 import java.util.ArrayList;
 
 public class ArtistTest {
+
+    // Mock the Album dependency
+    @Mock
+    private Album mockedAlbum;
+
+    // Create an Artist instance
+    private Artist artist;
+
+    // Initialize the mocks before each test
+    @BeforeMethod
+    public void setup() {
+        // Initialize mocks for the test class
+        MockitoAnnotations.initMocks(this);
+
+        // Prepare mock behavior for Album (if needed, like when we need to stub methods)
+        Mockito.when(mockedAlbum.getTitle()).thenReturn("Greatest Hits");
+
+        // Now create the Artist instance with the mocked Album
+        artist = new Artist(1, "Queen", 1970, "Rock", "England");
+    }
 
     @Test
     void testArtistConstructor() {
@@ -14,17 +37,13 @@ public class ArtistTest {
         String expectedGenre = "Rock";
         String expectedCountry = "England";
 
-        // Create a dummy Album object
-        Album expectedAlbum = new Album(1, "Greatest Hits", null, 1981, 10, new ArrayList<Song>(), "Rock");
+        // Assertions for the Artist object
+        Assert.assertEquals(artist.getName(), expectedName);
+        Assert.assertEquals(artist.getDebutYear(), expectedDebutYear);
+        Assert.assertEquals(artist.getGenre(), expectedGenre);
+        Assert.assertEquals(artist.getCountry(), expectedCountry);
 
-        // Now pass the expectedAlbum to Artist
-        Artist artist = new Artist(expectedId, expectedName, expectedDebutYear, expectedGenre, expectedCountry, expectedAlbum);
-
-        // Assertions
-        Assert.assertEquals(expectedName, artist.getName());
-        Assert.assertEquals(expectedDebutYear, artist.getDebutYear());
-        Assert.assertEquals(expectedGenre, artist.getGenre());
-        Assert.assertEquals(expectedCountry, artist.getCountry());
+        // Additional mock checks, if needed
+        Assert.assertEquals(artist.getName(), "Queen");
     }
-
 }
