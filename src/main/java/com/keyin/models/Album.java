@@ -11,8 +11,8 @@ public class Album {
     private String genre;
     private List<Song> listOfSongs;
 
-
-    public Album() { }
+    public Album() {
+    }
 
     public Album(long id, String title, Artist artist, int releaseYear, int numberOfSongs, String genre, List<Song> listOfSongs) {
         this.id = id;
@@ -24,25 +24,59 @@ public class Album {
         this.listOfSongs = listOfSongs;
     }
 
+    public long getId() {
+        return id;
+    }
 
-    public long getId() { return id; }
-    public void setId(long id) { this.id = id; }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public String getTitle() {
+        return title;
+    }
 
-    public Artist getArtist() { return artist; }
-    public void setArtist(Artist artist) { this.artist = artist; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public int getReleaseYear() { return releaseYear; }
-    public void setReleaseYear(int releaseYear) { this.releaseYear = releaseYear; }
+    public Artist getArtist() {
+        return artist;
+    }
 
-    public int getNumberOfSongs() { return numberOfSongs; }
-    public void setNumberOfSongs(int numberOfSongs) { this.numberOfSongs = numberOfSongs; }
+    public void setArtist(Artist artist) {
+        this.artist = artist;
+    }
 
-    public String getGenre() { return genre; }
-    public void setGenre(String genre) { this.genre = genre; }
+    public int getReleaseYear() {
+        return releaseYear;
+    }
 
-    public List<Song> getListOfSongs() { return listOfSongs; }
-    public void setListOfSongs(List<Song> listOfSongs) { this.listOfSongs = listOfSongs; }
+    public void setReleaseYear(int releaseYear) {
+        this.releaseYear = releaseYear;
+    }
+
+    public int getNumberOfSongs() {
+        return numberOfSongs;
+    }
+
+    public void setNumberOfSongs(int numberOfSongs) {
+        this.numberOfSongs = numberOfSongs;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public List<Song> getListOfSongs() {
+        return listOfSongs;
+    }
+
+    public void setListOfSongs(List<Song> listOfSongs) {
+        this.listOfSongs = listOfSongs;
+    }
 }

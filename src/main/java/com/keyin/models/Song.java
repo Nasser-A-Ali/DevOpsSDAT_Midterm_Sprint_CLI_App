@@ -1,28 +1,41 @@
 package com.keyin.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Song {
-    private int id;
+    @JsonProperty("id")
+    private long id;
+
+    @JsonProperty("title")
     private String title;
-    private int artistId;
+
+    @JsonProperty("artist") // Now an Artist object
+    private Artist artist;
+
+    @JsonProperty("genre")
     private String genre;
+
+    @JsonProperty("duration")
     private double duration;
-    private int releaseYear;
 
-    public Song(int id, String title, int artistId, String genre, double duration) {
-        this(id, title, artistId, genre, duration, -1);
-    }
+    @JsonProperty("releaseDate") // String instead of int releaseYear
+    private String releaseDate;
 
-    public Song(int id, String title, int artistId, String genre, double duration, int releaseYear) {
+    // Default constructor
+    public Song() {}
+
+    // Parameterized constructor
+    public Song(long id, String title, Artist artist, String genre, double duration, String releaseDate) {
         this.id = id;
         this.title = title;
-        this.artistId = artistId;
+        this.artist = artist;
         this.genre = genre;
         this.duration = duration;
-        this.releaseYear = releaseYear;
+        this.releaseDate = releaseDate;
     }
 
-
-    public int getId() {
+    // Getters
+    public long getId() {
         return id;
     }
 
@@ -30,8 +43,8 @@ public class Song {
         return title;
     }
 
-    public int getArtistId() {
-        return artistId;
+    public Artist getArtist() {
+        return artist;
     }
 
     public String getGenre() {
@@ -42,11 +55,12 @@ public class Song {
         return duration;
     }
 
-    public int getReleaseYear() {
-        return releaseYear;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setId(int id) {
+    // Setters
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -54,8 +68,8 @@ public class Song {
         this.title = title;
     }
 
-    public void setArtistId(int artistId) {
-        this.artistId = artistId;
+    public void setArtist(Artist artist) {
+        this.artist = artist;
     }
 
     public void setGenre(String genre) {
@@ -66,20 +80,20 @@ public class Song {
         this.duration = duration;
     }
 
-    public void setReleaseYear(int releaseYear) {
-        this.releaseYear = releaseYear;
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
+    // toString() method
     @Override
     public String toString() {
         return "Song{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", artistId=" + artistId +
+                ", artist=" + (artist != null ? artist.getName() : "Unknown Artist") +
                 ", genre='" + genre + '\'' +
                 ", duration=" + duration +
-                ", releaseYear=" + releaseYear +
+                ", releaseDate=" + releaseDate +
                 '}';
     }
-
 }
