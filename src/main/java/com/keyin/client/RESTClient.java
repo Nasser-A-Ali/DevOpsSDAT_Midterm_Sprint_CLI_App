@@ -245,25 +245,31 @@ public class RESTClient {
             requestBody = mapper.writeValueAsString(song);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+            return;
         }
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverURL + "/song"))  
+                .uri(URI.create(serverURL + "/song"))  // Ensure this is correct
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
         try {
             HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 201) {
-                System.out.println("Song successfully added to API!");
+
+            if (response.statusCode() == 201 || response.statusCode() == 200) {
+                System.out.println("Song successfully added: " + song.getTitle());
             } else {
-                System.out.println("Error: " + response.statusCode());
+                System.out.println("Failed to add song. HTTP Error: " + response.statusCode());
+                System.out.println("Response Body: " + response.body());
             }
         } catch (IOException | InterruptedException e) {
+            System.out.println("An error occurred while adding the song.");
             e.printStackTrace();
         }
+
     }
+
 
     public void updateSong(long id, Song song) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -300,7 +306,6 @@ public class RESTClient {
                 .uri(URI.create(serverURL + "/song/" + id))
                 .DELETE()
                 .build();
-
         try {
             HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -315,6 +320,10 @@ public class RESTClient {
             e.printStackTrace();
         }
     }
+
+
+
+
     public List<Album> getAlbumsByArtistId(long artistId) {
         List<Album> albums = new ArrayList<>();
         HttpRequest request = HttpRequest.newBuilder()

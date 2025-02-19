@@ -1,7 +1,9 @@
 package com.keyin.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true) // <-- Add this line
 public class Artist {
     @JsonProperty("id")
     private long id;

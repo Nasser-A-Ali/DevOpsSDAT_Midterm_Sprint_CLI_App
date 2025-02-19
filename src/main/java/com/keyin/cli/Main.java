@@ -86,11 +86,9 @@ public class Main {
                     long newArtistId = scanner.nextLong();
                     scanner.nextLine();
 
-                    Artist newArtist = restClient.getArtistById(newArtistId);
-                    if (newArtist == null) {
-                        System.out.println("Invalid artist ID. Please enter an existing artist.");
-                        break;
-                    }
+
+                    Artist artistReference = new Artist();
+                    artistReference.setId(newArtistId);
 
                     System.out.println("Enter song Genre: ");
                     String newGenre = scanner.nextLine();
@@ -102,10 +100,11 @@ public class Main {
                     System.out.println("Enter song release date (YYYY-MM-DD): ");
                     String releaseDate = scanner.nextLine();
 
-                    Song newSong = new Song(0, newTitle, newArtist, newGenre, newDuration, releaseDate);
+                    Song newSong = new Song(0, newTitle, artistReference, newGenre, newDuration, releaseDate);
                     restClient.addSong(newSong);
 
                     System.out.println("New song added: " + newTitle);
+
 
                     break;
 
