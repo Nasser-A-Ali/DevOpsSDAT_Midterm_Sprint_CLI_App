@@ -1,60 +1,85 @@
 package com.keyin.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class Song {
-    @JsonProperty("id")
-    private long id;
-
-    @JsonProperty("title")
+    private int id;
     private String title;
-
-    @JsonProperty("artist") // Now an Artist object
-    private Artist artist;
-
-    @JsonProperty("genre")
+    private int artistId;
     private String genre;
-
-    @JsonProperty("duration")
     private double duration;
+    private int releaseYear;
 
-    @JsonProperty("releaseDate")
-    private String releaseDate; // String instead of int releaseYear
-
-    public Song() {}
-
-    public Song(long id, String title, Artist artist, String genre, double duration, String releaseDate) {
-        this.id = id;
-        this.title = title;
-        this.artist = artist;
-        this.genre = genre;
-        this.duration = duration;
-        this.releaseDate = releaseDate;
+    public Song(int id, String title, int artistId, String genre, double duration) {
+        this(id, title, artistId, genre, duration, -1);
     }
 
-    public long getId() { return id; }
-    public String getTitle() { return title; }
-    public Artist getArtist() { return artist; }
-    public String getGenre() { return genre; }
-    public double getDuration() { return duration; }
-    public String getReleaseDate() { return releaseDate; }
+    public Song(int id, String title, int artistId, String genre, double duration, int releaseYear) {
+        this.id = id;
+        this.title = title;
+        this.artistId = artistId;
+        this.genre = genre;
+        this.duration = duration;
+        this.releaseYear = releaseYear;
+    }
 
-    public void setId(long id) { this.id = id; }
-    public void setTitle(String title) { this.title = title; }
-    public void setArtist(Artist artist) { this.artist = artist; }
-    public void setGenre(String genre) { this.genre = genre; }
-    public void setDuration(double duration) { this.duration = duration; }
-    public void setReleaseDate(String releaseDate) { this.releaseDate = releaseDate; }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getArtistId() {
+        return artistId;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public double getDuration() {
+        return duration;
+    }
+
+    public int getReleaseYear() {
+        return releaseYear;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setArtistId(int artistId) {
+        this.artistId = artistId;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public void setDuration(double duration) {
+        this.duration = duration;
+    }
+
+    public void setReleaseYear(int releaseYear) {
+        this.releaseYear = releaseYear;
+    }
 
     @Override
     public String toString() {
         return "Song{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", artist=" + (artist != null ? artist.getName() : "Unknown Artist") +
+                ", artistId=" + artistId +
                 ", genre='" + genre + '\'' +
                 ", duration=" + duration +
-                ", releaseDate=" + releaseDate +
+                ", releaseYear=" + releaseYear +
                 '}';
     }
+
 }

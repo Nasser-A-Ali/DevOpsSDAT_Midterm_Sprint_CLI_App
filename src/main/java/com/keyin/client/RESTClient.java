@@ -3,8 +3,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -106,13 +104,10 @@ public class RESTClient {
 
     public List<Song> getAllSongs() {
         List<Song> songs = new ArrayList<>();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverURL + "/songs")) // Directly hitting the correct endpoint
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(serverURL)).build();
 
         try {
             HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
-
             if (response.statusCode() == 200) {
                 songs = buildSongListFromResponse(response.body());
             } else {
@@ -169,7 +164,6 @@ public class RESTClient {
         return null;
     }
 
-
     public List<Album> buildAlbumListFromResponse(String response) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
@@ -219,23 +213,15 @@ public class RESTClient {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-        JsonNode rootNode = mapper.readTree(response);
+        List<Song> songList = mapper.readValue(response, new TypeReference<List<Song>>() {});
 
-        if (rootNode.isArray()) {
-            return mapper.readValue(response, new TypeReference<List<Song>>() {});
+        for (Song song : songList) {
+            System.out.println("Song ID: " + song.getId());
+            songs.add(song);
         }
 
-        JsonNode embeddedNode = rootNode.get("_embedded");
-
-        if (embeddedNode != null && embeddedNode.has("songs")) {
-            JsonNode songsNode = embeddedNode.get("songs");
-            return mapper.readValue(songsNode.toString(), new TypeReference<List<Song>>() {});
-        }
-
-        System.out.println("Warning: No songs found in API response.");
         return songs;
     }
-
 
     public void addSong(Song song) {
         ObjectMapper mapper = new ObjectMapper();
@@ -367,5 +353,4 @@ public class RESTClient {
 
         return null;
     }
-
 }

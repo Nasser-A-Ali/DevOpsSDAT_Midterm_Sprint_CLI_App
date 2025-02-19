@@ -5,20 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true) // <-- Add this line
 public class Artist {
-    @JsonProperty("id")
-    private long id;
-
-    @JsonProperty("name")
+    private int id;
     private String name;
-
-    @JsonProperty("debutYear")
-    private int debutYear;
-
-    @JsonProperty("genre")
+    private long debutYear;
     private String genre;
-
-    @JsonProperty("country")
     private String country;
+    private Album album;
 
 
     public Artist() {
@@ -30,53 +22,60 @@ public class Artist {
         this.debutYear = debutYear;
         this.genre = genre;
         this.country = country;
+        this.album = album;
     }
 
-    public long getId() {
+    public Album getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
+    }
+
+    public int getId() {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    //Add ID, and Albums
     public String getName() {
         return name;
-    }
-
-    public int getDebutYear() {
-        return debutYear;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setDebutYear(int debutYear) {
+    public long getDebutYear() {
+        return debutYear;
+    }
+
+    public void setDebutYear(long debutYear) {
         this.debutYear = debutYear;
+    }
+
+    public String getGenre() {
+        return genre;
     }
 
     public void setGenre(String genre) {
         this.genre = genre;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
     public void setCountry(String country) {
         this.country = country;
     }
-
-
 
     @Override
     public String toString() {
         return "Id=" + id + "; Artist=" + name;
     }
 }
-
