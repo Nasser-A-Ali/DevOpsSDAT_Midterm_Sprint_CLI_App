@@ -68,16 +68,22 @@ public class Main {
                 
 
                 case 3:
-                    System.out.println("\nViewing albums by artist...");
-                    System.out.print("Enter the artist's id: ");
-                    artistId = scanner.nextLong();
-                    scanner.nextLine();
+                while (true) {
+                    System.out.print("Enter the artist's ID: ");
+                    if (scanner.hasNextLong()) {
+                        artistId = scanner.nextLong();
+                        scanner.nextLine(); 
+                        break; 
+                    } else {
+                        System.out.println("Invalid input. Please enter a numeric artist ID.");
+                        scanner.next(); 
+                    }
+                }
                     artist = restClient.getArtistById(artistId);
                      if (artist == null) {
                         System.out.println("Could not find artist. Please try another!");
                         break;
                     } else {
-                    
                     
 
                     List<Album> albumsFromAPI = restClient.getAlbumsByArtistId(artistId);
@@ -93,6 +99,7 @@ public class Main {
                 }
                     break;
 
+                    
                 case 4:
                     System.out.println("\nAdding a new song...");
                     System.out.print("Enter song title: ");
