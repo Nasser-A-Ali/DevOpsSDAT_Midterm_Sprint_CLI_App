@@ -25,7 +25,7 @@ public class Main {
             System.out.println("8: Exit");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); 
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -36,7 +36,8 @@ public class Main {
                         System.out.println("No songs available.");
                     } else {
                         for (Song song : songsFromAPI) {
-                            String artistName = (song.getArtist() != null) ? song.getArtist().getName() : "Unknown Artist";
+                            String artistName = (song.getArtist() != null) ? song.getArtist().getName()
+                                    : "Unknown Artist";
                             System.out.println(artistName + " - " + song.getTitle());
                         }
                     }
@@ -44,22 +45,22 @@ public class Main {
 
                 case 2:
                     System.out.println("\nSearching for an artist...");
-                
+
                     long artistId;
                     while (true) {
                         System.out.print("Enter the artist's ID: ");
                         if (scanner.hasNextLong()) {
                             artistId = scanner.nextLong();
-                            scanner.nextLine(); 
-                            break; 
+                            scanner.nextLine();
+                            break;
                         } else {
                             System.out.println("Invalid input. Please enter a numeric artist ID.");
-                            scanner.next(); 
+                            scanner.next();
                         }
                     }
-                
+
                     Artist artist = restClient.getArtistById(artistId);
-                
+
                     if (artist != null) {
                         System.out.println("Artist Found: " + artist.getName());
                     } else {
@@ -72,15 +73,15 @@ public class Main {
                         System.out.print("Enter the artist's ID: ");
                         if (scanner.hasNextLong()) {
                             artistId = scanner.nextLong();
-                            scanner.nextLine(); 
-                            break; 
+                            scanner.nextLine();
+                            break;
                         } else {
                             System.out.println("Invalid input. Please enter a numeric artist ID.");
-                            scanner.next(); 
+                            scanner.next();
                         }
                     }
                     artist = restClient.getArtistById(artistId);
-                     if (artist == null) {
+                    if (artist == null) {
                         System.out.println("Could not find artist. Please try another!");
                         break;
                     } else {
@@ -99,7 +100,8 @@ public class Main {
 
                 case 4:
                     if (restClient.getAllArtists().isEmpty()) {
-                        System.out.println("No artists available. *To have a valid song, an artist must have first created it!*");
+                        System.out.println(
+                                "No artists available. *To have a valid song, an artist must have first created it!*");
                         System.out.println("Would you like to add an artist first? (Y/N)");
                         String addArtist = scanner.nextLine();
                         if (addArtist.equalsIgnoreCase("Y")) {
@@ -114,11 +116,11 @@ public class Main {
                         System.out.print("Enter the artist's ID: ");
                         if (scanner.hasNextLong()) {
                             artistId = scanner.nextLong();
-                            scanner.nextLine(); 
-                            break; 
+                            scanner.nextLine();
+                            break;
                         } else {
                             System.out.println("Invalid input. Please enter a numeric artist ID.");
-                            scanner.next(); 
+                            scanner.next();
                         }
                     }
                     System.out.print("Enter song title: ");
@@ -132,47 +134,56 @@ public class Main {
                         System.out.print("Enter song duration (e.g., 4.30 for 4min30sec): ");
                         if (scanner.hasNextLong()) {
                             newDuration = scanner.nextDouble();
-                            scanner.nextLine(); 
-                            break; 
+                            scanner.nextLine();
+                            break;
                         } else {
                             System.out.println("Invalid input. Please enter a numeric duration.");
-                            scanner.next(); 
+                            scanner.next();
                         }
                     }
-    
 
-                    System.out.print("Enter song release date (YYYY-MM-DD): ");
-                    String releaseDate = scanner.nextLine();
+                    int newReleaseYear;
+                    while (true) {
+                        System.out.print("Enter release year: ");
+                        if (scanner.hasNextInt()) {
+                            newReleaseYear = scanner.nextInt();
+                            scanner.nextLine();
+                            break;
+                        } else {
+                            System.out.println("Invalid input. Please enter a numeric release year.");
+                            scanner.nextLine();
+                        }
+                    }
 
                     Artist artistReference = new Artist();
-                    artistReference.setId(artistId); 
-                    Song newSong = new Song(0, newTitle, artistReference, newGenre, newDuration, releaseDate);
+                    artistReference.setId(artistId);
+                    Song newSong = new Song(0, newTitle, artistReference, newGenre, newDuration, newReleaseYear);
                     restClient.addSong(newSong);
 
                     System.out.println("New song added: " + newTitle);
                     break;
 
                 case 5:
-                    addArtist(scanner, restClient); 
+                    addArtist(scanner, restClient);
                     break;
 
                 case 6:
-                if (restClient.getAllSongs().isEmpty()) {   
-                    System.out.println("No songs available. Please add a song first before editing.");
-                    break;
-                }
+                    if (restClient.getAllSongs().isEmpty()) {
+                        System.out.println("No songs available. Please add a song first before editing.");
+                        break;
+                    }
                     System.out.println("\nEditing song details...");
                     long songId;
-                    while (true){
-                    System.out.print("Enter the ID of the song you want to edit: ");
-                    if (scanner.hasNextLong()) {
-                        songId = scanner.nextLong();
-                        scanner.nextLine();
-                        break;
-                    } else {
-                        System.out.println("Invalid input. Please enter a numeric song ID.");
-                        scanner.next(); 
-                    }
+                    while (true) {
+                        System.out.print("Enter the ID of the song you want to edit: ");
+                        if (scanner.hasNextLong()) {
+                            songId = scanner.nextLong();
+                            scanner.nextLine();
+                            break;
+                        } else {
+                            System.out.println("Invalid input. Please enter a numeric song ID.");
+                            scanner.next();
+                        }
                     }
 
                     Song songToEdit = restClient.getSongById(songId);
@@ -181,33 +192,53 @@ public class Main {
                         break;
                     }
 
-                    System.out.print("Enter new title (or press Enter to keep current: " + songToEdit.getTitle() + "): ");
+                    System.out
+                            .print("Enter new title or press Enter to keep current: (" + songToEdit.getTitle() + "): ");
                     String editTitle = scanner.nextLine();
-                    if (!editTitle.isBlank()) songToEdit.setTitle(editTitle);
+                    if (!editTitle.isBlank())
+                        songToEdit.setTitle(editTitle);
 
-                    System.out.print("Enter new genre (or press Enter to keep current: " + songToEdit.getGenre() + "): ");
+                    System.out
+                            .print("Enter new genre or press Enter to keep current: (" + songToEdit.getGenre() + "): ");
                     String editGenre = scanner.nextLine();
-                    if (!editGenre.isBlank()) songToEdit.setGenre(editGenre);
+                    if (!editGenre.isBlank())
+                        songToEdit.setGenre(editGenre);
 
                     double editDuration;
-                    while (true){
-                        System.out.print("Enter new duration (or -1 to keep current: " + songToEdit.getDuration() + "): ");
-                   
+                    while (true) {
+                        System.out.print(
+                                "Enter new duration or -1 to keep current: (" + songToEdit.getDuration() + "): ");
+
                         if (scanner.hasNextDouble()) {
                             editDuration = scanner.nextDouble();
-                            scanner.nextLine(); 
-                            break; 
+                            scanner.nextLine();
+                            break;
                         } else {
                             System.out.println("Invalid input. Please enter a numeric duration.");
-                            scanner.next(); 
+                            scanner.next();
                         }
                     }
-                    
-                    if (editDuration != -1) songToEdit.setDuration(editDuration);
 
-                    System.out.print("Enter new release date (or press Enter to keep current: " + songToEdit.getReleaseDate() + "): ");
-                    String editReleaseDate = scanner.nextLine();
-                    if (!editReleaseDate.isBlank()) songToEdit.setReleaseDate(editReleaseDate);
+                    if (editDuration != -1)
+                        songToEdit.setDuration(editDuration);
+
+                    int editReleaseYear;
+                    while (true) {
+                        System.out.print("Enter new release year  or -1 to keep current: ("
+                                + songToEdit.getReleaseYear() + "): ");
+                        if (scanner.hasNextInt()) {
+                            editReleaseYear = scanner.nextInt();
+                            scanner.nextLine();
+                            break;
+                        } else {
+                            System.out.println("Invalid input. Please enter a numeric release year.");
+                            scanner.next();
+                        }
+                    }
+
+                    if (editReleaseYear != -1){
+                        songToEdit.setReleaseYear(editReleaseYear);
+                    }
 
                     restClient.updateSong(songId, songToEdit);
                     System.out.println("Song details updated successfully!");
@@ -246,26 +277,23 @@ public class Main {
         }
     }
 
-
     private static void addArtist(Scanner scanner, RESTClient restClient) {
         System.out.println("\nAdding a new artist...");
         System.out.print("Enter artist name: ");
         String name = scanner.nextLine();
 
-        System.out.print("Enter debut year: ");
         int debutYear;
-        while(true) {
+        while (true) {
+            System.out.print("Enter debut year: ");
             if (scanner.hasNextInt()) {
                 debutYear = scanner.nextInt();
-                scanner.nextLine(); 
+                scanner.nextLine();
                 break;
-            }
-            else{
-            System.out.println("Invalid input. Please enter a numeric debut year.");
-            scanner.nextLine(); 
+            } else {
+                System.out.println("Invalid input. Please enter a numeric debut year.");
+                scanner.nextLine();
             }
         }
-      
 
         System.out.print("Enter genre: ");
         String genre = scanner.nextLine();

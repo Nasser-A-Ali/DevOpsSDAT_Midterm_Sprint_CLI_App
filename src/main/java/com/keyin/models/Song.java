@@ -9,7 +9,7 @@ public class Song {
     @JsonProperty("title")
     private String title;
 
-    @JsonProperty("artist") 
+    @JsonProperty("artist")
     private Artist artist;
 
     @JsonProperty("genre")
@@ -18,18 +18,19 @@ public class Song {
     @JsonProperty("duration")
     private double duration;
 
-    @JsonProperty("releaseDate") 
-    private String releaseDate;
+    @JsonProperty("releaseYear")
+    private int releaseYear;
 
-    public Song() {}
+    public Song() {
+    }
 
-    public Song(long id, String title, Artist artist, String genre, double duration, String releaseDate) {
+    public Song(long id, String title, Artist artist, String genre, double duration, int releaseYear) {
         this.id = id;
         this.title = title;
         this.artist = artist;
         this.genre = genre;
         this.duration = duration;
-        this.releaseDate = releaseDate;
+        this.releaseYear = releaseYear;
     }
 
     public long getId() {
@@ -52,8 +53,8 @@ public class Song {
         return duration;
     }
 
-    public String getReleaseDate() {
-        return releaseDate;
+    public int getReleaseYear() {
+        return releaseYear;
     }
 
     public void setId(long id) {
@@ -76,8 +77,8 @@ public class Song {
         this.duration = duration;
     }
 
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setReleaseYear(int releaseYear) {
+        this.releaseYear = releaseYear;
     }
 
     @Override
@@ -88,7 +89,7 @@ public class Song {
                 ", artist=" + (artist != null ? artist.getName() : "Unknown Artist") +
                 ", genre='" + genre + '\'' +
                 ", duration=" + duration +
-                ", releaseDate=" + releaseDate +
+                ", releaseYear=" + releaseYear +
                 '}';
     }
 }
