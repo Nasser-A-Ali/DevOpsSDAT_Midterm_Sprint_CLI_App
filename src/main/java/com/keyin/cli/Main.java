@@ -157,10 +157,23 @@ public class Main {
                     break;
 
                 case 6:
+                if (restClient.getAllSongs().isEmpty()) {   
+                    System.out.println("No songs available. Please add a song first before editing.");
+                    break;
+                }
                     System.out.println("\nEditing song details...");
+                    long songId;
+                    while (true){
                     System.out.print("Enter the ID of the song you want to edit: ");
-                    long songId = scanner.nextLong();
-                    scanner.nextLine();
+                    if (scanner.hasNextLong()) {
+                        songId = scanner.nextLong();
+                        scanner.nextLine();
+                        break;
+                    } else {
+                        System.out.println("Invalid input. Please enter a numeric song ID.");
+                        scanner.next(); 
+                    }
+                    }
 
                     Song songToEdit = restClient.getSongById(songId);
                     if (songToEdit == null) {
@@ -176,9 +189,20 @@ public class Main {
                     String editGenre = scanner.nextLine();
                     if (!editGenre.isBlank()) songToEdit.setGenre(editGenre);
 
-                    System.out.print("Enter new duration (or -1 to keep current: " + songToEdit.getDuration() + "): ");
-                    double editDuration = scanner.nextDouble();
-                    scanner.nextLine();
+                    double editDuration;
+                    while (true){
+                        System.out.print("Enter new duration (or -1 to keep current: " + songToEdit.getDuration() + "): ");
+                   
+                        if (scanner.hasNextDouble()) {
+                            editDuration = scanner.nextDouble();
+                            scanner.nextLine(); 
+                            break; 
+                        } else {
+                            System.out.println("Invalid input. Please enter a numeric duration.");
+                            scanner.next(); 
+                        }
+                    }
+                    
                     if (editDuration != -1) songToEdit.setDuration(editDuration);
 
                     System.out.print("Enter new release date (or press Enter to keep current: " + songToEdit.getReleaseDate() + "): ");
