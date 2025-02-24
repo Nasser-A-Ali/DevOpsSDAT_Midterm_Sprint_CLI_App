@@ -24,7 +24,7 @@ public class Main {
             System.out.println("7: Exit");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine(); 
 
             switch (choice) {
                 case 1:
@@ -41,26 +41,44 @@ public class Main {
                     }
                     break;
 
-                case 2:
+                    case 2:
                     System.out.println("\nSearching for an artist...");
-                    System.out.print("Enter the artist's ID: ");
-
-                    long artistId = scanner.nextLong();
-
+                
+                    long artistId;
+                    while (true) {
+                        System.out.print("Enter the artist's ID: ");
+                        if (scanner.hasNextLong()) {
+                            artistId = scanner.nextLong();
+                            scanner.nextLine(); 
+                            break; 
+                        } else {
+                            System.out.println("Invalid input. Please enter a numeric artist ID.");
+                            scanner.next(); 
+                        }
+                    }
+                
                     Artist artist = restClient.getArtistById(artistId);
-
+                
                     if (artist != null) {
                         System.out.println("Artist Found: " + artist.getName());
                     } else {
                         System.out.println("Could not find artist. Please try another!");
                     }
                     break;
+                
 
                 case 3:
                     System.out.println("\nViewing albums by artist...");
                     System.out.print("Enter the artist's id: ");
                     artistId = scanner.nextLong();
                     scanner.nextLine();
+                    artist = restClient.getArtistById(artistId);
+                     if (artist == null) {
+                        System.out.println("Could not find artist. Please try another!");
+                        break;
+                    } else {
+                    
+                    
 
                     List<Album> albumsFromAPI = restClient.getAlbumsByArtistId(artistId);
                     if (albumsFromAPI.isEmpty()) {
@@ -72,6 +90,7 @@ public class Main {
                             System.out.println(album.getTitle() + ", " + album.getReleaseYear());
                         }
                     }
+                }
                     break;
 
                 case 4:
