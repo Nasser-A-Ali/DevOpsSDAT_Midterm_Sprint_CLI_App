@@ -3,7 +3,7 @@ package com.keyin.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown = true) // <-- Add this line
+@JsonIgnoreProperties(ignoreUnknown = true) 
 public class Artist {
 
     @JsonProperty("id")
@@ -21,11 +21,9 @@ public class Artist {
     @JsonProperty("country")
     private String country;
 
-    // Default constructor
     public Artist() {
     }
 
-    // Parameterized constructor
     public Artist(long id, String name, int debutYear, String genre, String country) {
         this.id = id;
         this.name = name;
@@ -34,7 +32,6 @@ public class Artist {
         this.country = country;
     }
 
-    // Getters
     public long getId() {
         return id;
     }
@@ -55,7 +52,6 @@ public class Artist {
         return country;
     }
 
-    // Setters
     public void setId(long id) {
         this.id = id;
     }
@@ -76,7 +72,6 @@ public class Artist {
         this.country = country;
     }
 
-    // toString method
     @Override
     public String toString() {
         return "Id=" + id + "; Artist=" + name;

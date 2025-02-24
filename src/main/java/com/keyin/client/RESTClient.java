@@ -60,7 +60,7 @@ public class RESTClient {
     public List<Album> getAllAlbums() {
         List<Album> albums = new ArrayList<>();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverURL + "/albums"))  // Ensure correct endpoint
+                .uri(URI.create(serverURL + "/albums")) 
                 .build();
 
         try {
@@ -79,12 +79,12 @@ public class RESTClient {
     public List<Artist> getAllArtists() {
         List<Artist> artists = new ArrayList<>();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverURL + "/artists"))  // Ensure correct endpoint
+                .uri(URI.create(serverURL + "/artists"))
                 .build();
 
         try {
             HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println("Raw API Response for Artists: " + response.body());
+            // System.out.println("Raw API Response for Artists: " + response.body());
             if (response.statusCode() == 200) {
                 artists = buildArtistListFromResponse(response.body());
             } else {
@@ -99,7 +99,7 @@ public class RESTClient {
     public List<Song> getAllSongs() {
         List<Song> songs = new ArrayList<>();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverURL + "/songs")) // Directly hitting the correct endpoint
+                .uri(URI.create(serverURL + "/songs")) 
                 .build();
 
         try {
@@ -160,13 +160,15 @@ public class RESTClient {
         JsonNode rootNode = mapper.readTree(response);
 
         if (rootNode.isArray()) {
-            return mapper.readValue(response, new TypeReference<List<Album>>() {});
+            return mapper.readValue(response, new TypeReference<List<Album>>() {
+            });
         }
 
-        JsonNode embeddedNode = rootNode.get("_embedded");  // Check if albums are nested
+        JsonNode embeddedNode = rootNode.get("_embedded"); 
         if (embeddedNode != null && embeddedNode.has("albums")) {
             JsonNode albumsNode = embeddedNode.get("albums");
-            return mapper.readValue(albumsNode.toString(), new TypeReference<List<Album>>() {});
+            return mapper.readValue(albumsNode.toString(), new TypeReference<List<Album>>() {
+            });
         }
 
         System.out.println("Warning: No albums found in API response.");
@@ -179,13 +181,15 @@ public class RESTClient {
         JsonNode rootNode = mapper.readTree(response);
 
         if (rootNode.isArray()) {
-            return mapper.readValue(response, new TypeReference<List<Artist>>() {});
+            return mapper.readValue(response, new TypeReference<List<Artist>>() {
+            });
         }
 
         JsonNode embeddedNode = rootNode.get("_embedded");
         if (embeddedNode != null && embeddedNode.has("artists")) {
             JsonNode artistsNode = embeddedNode.get("artists");
-            return mapper.readValue(artistsNode.toString(), new TypeReference<List<Artist>>() {});
+            return mapper.readValue(artistsNode.toString(), new TypeReference<List<Artist>>() {
+            });
         }
 
         System.out.println("Warning: No artists found in API response.");
@@ -199,13 +203,15 @@ public class RESTClient {
         JsonNode rootNode = mapper.readTree(response);
 
         if (rootNode.isArray()) {
-            return mapper.readValue(response, new TypeReference<List<Song>>() {});
+            return mapper.readValue(response, new TypeReference<List<Song>>() {
+            });
         }
 
         JsonNode embeddedNode = rootNode.get("_embedded");
         if (embeddedNode != null && embeddedNode.has("songs")) {
             JsonNode songsNode = embeddedNode.get("songs");
-            return mapper.readValue(songsNode.toString(), new TypeReference<List<Song>>() {});
+            return mapper.readValue(songsNode.toString(), new TypeReference<List<Song>>() {
+            });
         }
 
         System.out.println("Warning: No songs found in API response.");
@@ -224,7 +230,7 @@ public class RESTClient {
         }
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverURL + "/song"))  // Ensure this is correct
+                .uri(URI.create(serverURL + "/song")) 
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
@@ -254,7 +260,7 @@ public class RESTClient {
         }
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverURL + "/songs/" + id))  // Ensure this URL is correct
+                .uri(URI.create(serverURL + "/songs/" + id)) 
                 .header("Content-Type", "application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
@@ -288,6 +294,37 @@ public class RESTClient {
             }
         } catch (IOException | InterruptedException e) {
             System.out.println("An error occurred while deleting the song.");
+            e.printStackTrace();
+        }
+    }
+
+    public void addArtist(Artist artist) {
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = "";
+
+        try {
+            requestBody = mapper.writeValueAsString(artist);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/artist"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        try {
+            HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 201 || response.statusCode() == 200) {
+                System.out.println("Artist successfully added: " + artist.getName());
+            } else {
+                System.out.println("Failed to add artist. HTTP Error: " + response.statusCode());
+                System.out.println("Response Body: " + response.body());
+            }
+        } catch (IOException | InterruptedException e) {
+            System.out.println("An error occurred while adding the artist.");
             e.printStackTrace();
         }
     }

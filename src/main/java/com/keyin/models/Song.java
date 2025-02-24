@@ -9,7 +9,7 @@ public class Song {
     @JsonProperty("title")
     private String title;
 
-    @JsonProperty("artist") // Now an Artist object
+    @JsonProperty("artist") 
     private Artist artist;
 
     @JsonProperty("genre")
@@ -18,13 +18,11 @@ public class Song {
     @JsonProperty("duration")
     private double duration;
 
-    @JsonProperty("releaseDate") // String instead of int releaseYear
+    @JsonProperty("releaseDate") 
     private String releaseDate;
 
-    // Default constructor
     public Song() {}
 
-    // Parameterized constructor
     public Song(long id, String title, Artist artist, String genre, double duration, String releaseDate) {
         this.id = id;
         this.title = title;
@@ -34,7 +32,6 @@ public class Song {
         this.releaseDate = releaseDate;
     }
 
-    // Getters
     public long getId() {
         return id;
     }
@@ -59,7 +56,6 @@ public class Song {
         return releaseDate;
     }
 
-    // Setters
     public void setId(long id) {
         this.id = id;
     }
@@ -84,7 +80,6 @@ public class Song {
         this.releaseDate = releaseDate;
     }
 
-    // toString() method
     @Override
     public String toString() {
         return "Song{" +
