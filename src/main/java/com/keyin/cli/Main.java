@@ -43,10 +43,11 @@ public class Main {
 
                 case 2:
                     System.out.println("\nSearching for an artist...");
-                    System.out.print("Enter the artist's name: ");
-                    String artistName = scanner.nextLine();
+                    System.out.print("Enter the artist's ID: ");
 
-                    Artist artist = restClient.getArtistByName(artistName);
+                    long artistId = scanner.nextLong();
+
+                    Artist artist = restClient.getArtistById(artistId);
 
                     if (artist != null) {
                         System.out.println("Artist Found: " + artist.getName());
@@ -58,7 +59,7 @@ public class Main {
                 case 3:
                     System.out.println("\nViewing albums by artist...");
                     System.out.print("Enter the artist's id: ");
-                    long artistId = scanner.nextLong();
+                    artistId = scanner.nextLong();
                     scanner.nextLine();
 
                     List<Album> albumsFromAPI = restClient.getAlbumsByArtistId(artistId);
