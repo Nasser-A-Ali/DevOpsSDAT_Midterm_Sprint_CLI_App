@@ -127,7 +127,7 @@ public class RESTClient {
                 mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
                 return mapper.readValue(response.body(), Song.class);
             } else {
-                System.out.println("Failed to fetch song. Error: " + response.statusCode());
+                // System.out.println("Failed to fetch song. Error: " + response.statusCode());
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -146,7 +146,7 @@ public class RESTClient {
                 ObjectMapper mapper = new ObjectMapper();
                 return mapper.readValue(response.body(), Artist.class);
             } else {
-                System.out.println("Error fetching artist: " + response.statusCode());
+                // System.out.println("Error fetching artist: " + response.statusCode());
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

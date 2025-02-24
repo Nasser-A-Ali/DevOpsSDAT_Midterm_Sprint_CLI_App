@@ -44,7 +44,14 @@ public class Main {
                     break;
 
                 case 2:
+                    List<Artist> artistsFromAPI = restClient.getAllArtists();
+
                     System.out.println("\nSearching for an artist...");
+
+                    if (artistsFromAPI.isEmpty()) {
+                        System.out.println("No artists available.");
+                        break;
+                    }
 
                     long artistId;
                     while (true) {
@@ -69,6 +76,15 @@ public class Main {
                     break;
 
                 case 3:
+                    List<Album> albumsFromAPI = restClient.getAllAlbums();
+
+                    System.out.println("\nSearching for an artist...");
+
+                    if (albumsFromAPI.isEmpty()) {
+                        System.out.println("No albums available.");
+                        break;
+                    }
+
                     while (true) {
                         System.out.print("Enter the artist's ID: ");
                         if (scanner.hasNextLong()) {
@@ -85,13 +101,13 @@ public class Main {
                         System.out.println("Could not find artist. Please try another!");
                         break;
                     } else {
-                        List<Album> albumsFromAPI = restClient.getAlbumsByArtistId(artistId);
+                        List<Album> artistAlbumsFromAPI = restClient.getAlbumsByArtistId(artistId);
                         if (albumsFromAPI.isEmpty()) {
                             System.out.println("No albums by this artist. Please try another!");
                         } else {
-                            String artistsName = albumsFromAPI.get(0).getArtist().getName();
+                            String artistsName = artistAlbumsFromAPI.get(0).getArtist().getName();
                             System.out.println("Albums by " + artistsName + ":");
-                            for (Album album : albumsFromAPI) {
+                            for (Album album : artistAlbumsFromAPI) {
                                 System.out.println(album.getTitle() + ", " + album.getReleaseYear());
                             }
                         }
@@ -116,8 +132,13 @@ public class Main {
                         System.out.print("Enter the artist's ID: ");
                         if (scanner.hasNextLong()) {
                             artistId = scanner.nextLong();
-                            scanner.nextLine();
-                            break;
+                            scanner.nextLine(); 
+                
+                            if (restClient.getArtistById(artistId) != null) {
+                                break; 
+                            } else {
+                                System.out.println("Artist not found. Please enter a valid artist ID.");
+                            }
                         } else {
                             System.out.println("Invalid input. Please enter a numeric artist ID.");
                             scanner.next();
@@ -236,7 +257,7 @@ public class Main {
                         }
                     }
 
-                    if (editReleaseYear != -1){
+                    if (editReleaseYear != -1) {
                         songToEdit.setReleaseYear(editReleaseYear);
                     }
 
@@ -304,6 +325,6 @@ public class Main {
         Artist newArtist = new Artist(0, name, debutYear, genre, country);
         restClient.addArtist(newArtist);
 
-        System.out.println("New artist added: " + name);
+        System.out.println("New artist added with ID: " + newArtist.getId());
     }
 }
