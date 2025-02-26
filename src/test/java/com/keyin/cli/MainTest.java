@@ -149,7 +149,6 @@ public class MainTest {
 
     @Test
     void testViewAlbumsByArtist() {
-        // Prepare test data
         Artist artist = new Artist();
         artist.setId(1L);
         artist.setName("Test Artist");
@@ -166,22 +165,19 @@ public class MainTest {
 
         List<Album> mockAlbums = Arrays.asList(album1, album2);
 
-        // Mock REST client behavior
+        when(mockRestClient.getArtistById(1L)).thenReturn(artist);
         when(mockRestClient.getAlbumsByArtistId(1L)).thenReturn(mockAlbums);
 
-        // Simulate user input
         provideInput("3\n1\n7\n");
         app = new Main(new Scanner(System.in), mockRestClient);
 
-        // Run the application
         app.run();
 
-        // Verify the output
         String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("Albums by Test Artist:"));
         assertTrue(output.contains("Test Album 1, 2024"));
         assertTrue(output.contains("Test Album 2, 2023"));
-
-        // Verify the REST client method was called
+        verify(mockRestClient, times(1)).getArtistById(1L);
         verify(mockRestClient, times(1)).getAlbumsByArtistId(1L);
     }
 
