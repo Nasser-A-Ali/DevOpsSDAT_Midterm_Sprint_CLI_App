@@ -98,12 +98,18 @@ public class Main {
         long artistId = scanner.nextLong();
         scanner.nextLine();
 
+        // First, get the artist to display their name correctly
+        Artist artist = restClient.getArtistById(artistId);
+        if (artist == null) {
+            System.out.println("Artist not found with ID: " + artistId);
+            return;
+        }
+
         List<Album> albumsFromAPI = restClient.getAlbumsByArtistId(artistId);
         if (albumsFromAPI.isEmpty()) {
-            System.out.println("No albums by this artist. Please try another!");
+            System.out.println("No albums found for artist: " + artist.getName());
         } else {
-            String artistsName = albumsFromAPI.get(0).getArtist().getName();
-            System.out.println("Albums by " + artistsName + ":");
+            System.out.println("Albums by " + artist.getName() + ":");
             for (Album album : albumsFromAPI) {
                 System.out.println(album.getTitle() + ", " + album.getReleaseYear());
             }
