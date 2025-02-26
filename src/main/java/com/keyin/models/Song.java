@@ -87,13 +87,9 @@ public class Song {
     // toString() method
     @Override
     public String toString() {
-        return "Song{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", artist=" + (artist != null ? artist.getName() : "Unknown Artist") +
-                ", genre='" + genre + '\'' +
-                ", duration=" + duration +
-                ", releaseDate=" + releaseDate +
-                '}';
+        return "ID:" + id +
+                ", Song Title: " + title +
+                ", Artist: " + (artist != null ? artist.getName() : "Unknown Artist") +
+                ", Genre: " + genre;
     }
 }
