@@ -28,7 +28,7 @@ public class Main {
             System.out.println("7: Exit");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             if (choice == 7) {
                 System.out.println("\nExiting the program. Goodbye!");
