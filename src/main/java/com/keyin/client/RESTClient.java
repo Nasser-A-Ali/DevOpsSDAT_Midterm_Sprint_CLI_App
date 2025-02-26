@@ -295,7 +295,7 @@ public class RESTClient {
     public List<Album> getAlbumsByArtistId(long artistId) {
         List<Album> albums = new ArrayList<>();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverURL + "/albums?artist_id=" + artistId))
+                .uri(URI.create(serverURL + "/album_search?artist_id=" + artistId))
                 .build();
 
         try {
