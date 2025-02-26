@@ -55,7 +55,6 @@ public class MainTest {
 
     @Test
     void testViewAllSongs() {
-        // Prepare test data
         Artist artist = new Artist();
         artist.setName("Test Artist");
 
@@ -63,67 +62,51 @@ public class MainTest {
         Song song2 = new Song(2L, "Test Song 2", artist, "Pop", 4.12, "2024-01-02");
         List<Song> mockSongs = Arrays.asList(song1, song2);
 
-        // Mock REST client behavior
         when(mockRestClient.getAllSongs()).thenReturn(mockSongs);
 
-        // Simulate user input
         provideInput("1\n7\n");
         app = new Main(new Scanner(System.in), mockRestClient);
 
-        // Run the application
         app.run();
 
-        // Verify the output
         String output = outputStreamCaptor.toString();
         assertTrue(output.contains("Test Artist - Test Song 1"));
         assertTrue(output.contains("Test Artist - Test Song 2"));
 
-        // Verify the REST client method was called
         verify(mockRestClient, times(1)).getAllSongs();
     }
 
     @Test
     void testViewAllSongsEmpty() {
-        // Mock empty song list
         when(mockRestClient.getAllSongs()).thenReturn(Collections.emptyList());
 
-        // Simulate user input
         provideInput("1\n7\n");
         app = new Main(new Scanner(System.in), mockRestClient);
 
-        // Run the application
         app.run();
 
-        // Verify the output
         String output = outputStreamCaptor.toString();
         assertTrue(output.contains("No songs available."));
 
-        // Verify the REST client method was called
         verify(mockRestClient, times(1)).getAllSongs();
     }
 
     @Test
     void testSearchForArtist() {
-        // Prepare test data
         Artist mockArtist = new Artist();
         mockArtist.setId(1L);
         mockArtist.setName("Test Artist");
 
-        // Mock REST client behavior
         when(mockRestClient.getArtistByName("Test Artist")).thenReturn(mockArtist);
 
-        // Simulate user input
         provideInput("2\nTest Artist\n7\n");
         app = new Main(new Scanner(System.in), mockRestClient);
 
-        // Run the application
         app.run();
 
-        // Verify the output
         String output = outputStreamCaptor.toString();
         assertTrue(output.contains("Artist Found: Test Artist"));
 
-        // Verify the REST client method was called
         verify(mockRestClient, times(1)).getArtistByName("Test Artist");
     }
 
