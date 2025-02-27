@@ -292,6 +292,37 @@ public class RESTClient {
         }
     }
 
+    public void addArtist(Artist artist) {
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = "";
+
+        try {
+            requestBody = mapper.writeValueAsString(artist);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverURL + "/artist"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        try {
+            HttpResponse<String> response = getClient().send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 201 || response.statusCode() == 200) {
+                System.out.println("Artist successfully added: " + artist.getName());
+            } else {
+                System.out.println("Failed to add artist. HTTP Error: " + response.statusCode());
+                System.out.println("Response Body: " + response.body());
+            }
+        } catch (IOException | InterruptedException e) {
+            System.out.println("An error occurred while adding the artist.");
+            e.printStackTrace();
+        }
+    }
+
     public List<Album> getAlbumsByArtistId(long artistId) {
         List<Album> albums = new ArrayList<>();
         HttpRequest request = HttpRequest.newBuilder()
